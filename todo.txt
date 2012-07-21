@@ -1,3 +1,17 @@
-#	set up project:
-	#	add boilerplate files
-	#	set up repository 
+# X	set up project:
+	# X	add boilerplate files
+	# X	set up repository 
+
+@ 	game framework:
+	# X	write init function for Crafty
+	#	make init also add necessary margins to canvas autoamtically
+
+@	player:
+	#	set up player entity with default components
+	#	write custom components for movement:
+		#	write a component that decides which direction the player has moved from scrolling
+		#	write a component that does the actual movement animation and handles states
+		#	have the player's sprite animate when moving
+	
+@	artwork:
+	#	copy over Oryx' spritesheets
