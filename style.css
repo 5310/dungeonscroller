@@ -1,3 +1,7 @@
 #cr-stage {
-	border: 1px solid black;
+	margin: 100px;
+}
+
+#cr-stage > canvas {
+	background: silver;
 }
