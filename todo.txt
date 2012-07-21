@@ -8,10 +8,13 @@
 
 @	player:
 	#	set up player entity with default components
+	#	wrap it in a function
 	#	write custom components for movement:
 		#	write a component that decides which direction the player has moved from scrolling
 		#	write a component that does the actual movement animation and handles states
 		#	have the player's sprite animate when moving
 	
-@	artwork:
-	#	copy over Oryx' spritesheets
+@ X	artwork:
+	# X	copy over Oryx' spritesheets
+	# X	edit as necessary
+	# X	split animation statically
