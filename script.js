@@ -15,4 +15,13 @@ init = function() {
     Crafty.init(width, height);
     Crafty.canvas.init();
     
+    // Loading assets.
+    Crafty.load(["static.png"]);
+    
+    // Defining sprites.
+    Crafty.sprite(24, "static.png", {
+		sprite_adventurer: [5, 2],
+		sprite_bat: [5, 14]
+	});
+    
 };
