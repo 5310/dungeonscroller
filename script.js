@@ -21,7 +21,8 @@ init = function() {
     // Defining sprites.
     Crafty.sprite(24, "static.png", {
 		sprite_adventurer: [5, 2],
-		sprite_bat: [5, 14]
+		sprite_bat: [5, 14],
+		sprite_brick: [1, 39]
 	});
     
 };
