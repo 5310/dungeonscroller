@@ -1,0 +1,3 @@
+#	set up project:
+	#	add boilerplate files
+	#	set up repository 
