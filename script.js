@@ -28,6 +28,30 @@ init = function() {
 	sprite_brick: [1, 39]
     });
     
+    // Custom components:
+    
+    // move - This components keeps track of all relevant states for movement, 
+    // such as "impulses" to discrete now and target position, 
+    // and also the ticking movement function.
+    Crafty.c("move", {
+	speed: 0,		// Peak speed for entity.
+	_move: {		// Namespace for internal storage.
+	    mx: 0,		// Impulse along x axis in grid units.
+	    my: 0,		// Ditto for y.
+	    nx: 0,		// Storage for current/previous entity position in pixels by discrete grid units, x.
+	    ny: 0,		// Ditto for y.
+	    ox: 0,		// Storage for target entity position in pixels by discrete grid units, x.
+	    oy: 0,		// Ditto for y.
+	    state: 0,		// State to control movement: 0 = ready to move. 1 = moving.
+	    speed: 0,		// Current speed.
+	    tick: function() {}	// Repeating function that does the actual movement.
+	},
+	speed_now: 0,		// Storage for current speed.
+	init: function() {	// Initialization function for component.
+	    this.bind('enterframe', this._move.tick);
+	}
+    });
+    
 };
 
 test = function() {
