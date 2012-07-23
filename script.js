@@ -3,6 +3,9 @@ window.onload = function () {
     // Initialize.
     init();
     
+    // Test.
+    test();
+    
 };
 
 init = function() {
@@ -26,3 +29,12 @@ init = function() {
     });
     
 };
+
+test = function() {
+    
+    player = Crafty.e("2D, Canvas, sprite_adventurer, Fourway, Tween")
+	.attr({x: 160, y: 96, w: 24, h: 24}) // for Component 2D
+	.fourway(10) // for Component Fourway
+	.tween({x: 400}, 200);
+	
+}
