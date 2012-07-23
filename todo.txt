@@ -10,8 +10,9 @@
 	#	set up player entity with default components
 	#	wrap it in a function
 	#	write custom components for movement:
-		#	write a component that decides which direction the player has moved from scrolling
-		#	write a component that does the actual movement animation and handles states
+		#	a component that stores movement by units, a discrete beginning position, and a discrete end position, and a state for movement animation: move
+		#	extend that component to do the actual movement animation and also set states for movement, runs every frame
+		#	write a component that decides which direction the player has moved from scrolling: control_scroll
 		#	have the player's sprite animate when moving
 	
 @ X	artwork:
