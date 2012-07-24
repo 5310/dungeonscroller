@@ -13,9 +13,10 @@
 		# X	a component that stores movement by units, a discrete beginning position, and a discrete end position, and a state for movement animation: move
 		# X	extend that component to do the actual movement animation and also set states for movement, runs every frame
 		# X	write a function to initiate directional movement so that angular movement is not possible
-		#	add an event for when movement is possible
-		#	write a component that decides which direction the player has moved from scrolling: control_scroll
+		# X	add an event for when movement is possible
 		#	have the player's sprite accelerate when moving
+		#	write a component that decides which direction the player has moved from scrolling: control_scroll
+		#	add dependencies for these components
 	
 @ X	artwork:
 	# X	copy over Oryx' spritesheets

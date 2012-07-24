@@ -53,6 +53,10 @@ init = function() {
 		// Regulate speed.						//TODO: This will be changed to allow easing.
 		move.speed = this.speed;
 		
+		// If entity ready to move, trigger an event.
+		if ( move.state == 0 )
+		    Crafty.trigger("MovementReady");
+		
 		if ( move.state == 1 ) {	// If entity is moving:
 
 		    // Move entity.
