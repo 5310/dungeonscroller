@@ -53,27 +53,37 @@ init = function() {
 		// Regulate speed.						//TODO: This will be changed to allow easing.
 		move.speed = this.speed;
 		
-		// If entity ready to move, trigger an event.
-		if ( move.state == 0 )
-		    Crafty.trigger("MovementReady");
 		
-		if ( move.state == 1 ) {	// If entity is moving:
-
-		    // Move entity.
-		    this.x += move.mx*move.speed;
-		    this.y += move.my*move.speed;
-
-		    // Snap entity to target if reached.
-		    if ( (move.mx > 0 && this.x >= move.ox) || (move.mx < 0 && this.x <= move.ox) )
-			this.x = move.ox;
-		    if ( (move.my > 0 && this.y >= move.oy) || (move.my < 0 && this.y <= move.oy) )
-			this.y = move.oy;
+		switch ( move.state ) {
 		    
-		    // If target reached, change state back to 0.
-		    if ( this.x == move.ox && this.y == move.oy ) {
-			move.state = 0;
-		    }
+		    case 0:	// Entity is ready to move.
 		    
+			// Trigger an event.
+			Crafty.trigger("MovementReady");
+			
+			return;
+			break;
+		
+		    case 1: 	// If entity is moving:
+
+			// Move entity.
+			this.x += move.mx*move.speed;
+			this.y += move.my*move.speed;
+
+			// Snap entity to target if reached.
+			if ( (move.mx > 0 && this.x >= move.ox) || (move.mx < 0 && this.x <= move.ox) )
+			    this.x = move.ox;
+			if ( (move.my > 0 && this.y >= move.oy) || (move.my < 0 && this.y <= move.oy) )
+			    this.y = move.oy;
+			
+			// If target reached, change state back to 0.
+			if ( this.x == move.ox && this.y == move.oy ) {
+			    move.state = 0;
+			}
+			
+			return;
+			break;
+		
 		}
 		
 	    }
