@@ -8,6 +8,7 @@
 
 @	player:
 	#	set up player entity with default components
+	#	add animated sprite, too
 	#	wrap it in a function
 	#	write custom components for movement:
 		# X	a component that stores movement by units, a discrete beginning position, and a discrete end position, and a state for movement animation: move
