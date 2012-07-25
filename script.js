@@ -155,4 +155,22 @@ test = function() {
     player = Crafty.e("2D, Canvas, sprite_adventurer, move")
 	.attr({x: 160, y: 96, w: 24, h: 24}) // for Component 2D
 	
+    
+    c = document.getElementsByTagName('canvas')[0];
+    var player_mouse_move = function(e) { 
+	var x = e.offsetX - player.x - player.w/2;
+	var y = e.offsetY - player.y - player.h/2;
+	if ( Math.abs(x) > Math.abs(y) )
+	    if ( x > 0 )
+		player.move(1);
+	    else
+		player.move(3);
+	else
+	    if ( y > 0 )
+		player.move(2);
+	    else
+		player.move(4);
+    };
+    c.onmousedown = player_mouse_move;
+	
 }
