@@ -3,9 +3,6 @@ window.onload = function () {
     // Initialize.
     init();
     
-    // Test.
-    test();
-    
 };
 
 init = function() {
