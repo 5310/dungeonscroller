@@ -4,6 +4,7 @@
 
 @ 	game framework:
 	# X	write init function for Crafty
+	# X	set-up a loading and a main scene with appropriate functioning
 	#	make init also add necessary margins to canvas autoamtically
 
 @	player:

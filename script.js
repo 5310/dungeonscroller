@@ -9,6 +9,8 @@ window.onload = function () {
 };
 
 init = function() {
+    
+    // Setup: //
 	
     // Dimensions.
     var width = 1000;
@@ -18,19 +20,39 @@ init = function() {
     Crafty.init(width, height);
     Crafty.canvas.init();
     
-    // Loading assets.
-    Crafty.load(["static.png"]);
     
-    // Defining sprites.
-    Crafty.sprite(24, "static.png", {
-	sprite_adventurer: [5, 2],
-	sprite_bat: [5, 14],
-	sprite_brick: [1, 39]
+    // Scenes: //
+    
+    // Loading scene.
+    Crafty.scene("loading", function() {
+	
+	// Loading assets.
+	Crafty.load(["static.png", "animated.png"], function() {
+	    Crafty.scene("main"); //when everything is loaded, run the main scene
+	});
+	
+	// Defining sprites.
+	Crafty.sprite(24, "static.png", {
+	    sprite_adventurer: [5, 2],
+	    sprite_bat: [5, 14],
+	    sprite_brick: [1, 39]
+	});
+    
     });
     
-    // Custom components:
+    // Main scene.
+    Crafty.scene("main", function() {
+	test();
+    });
+
+    // Load the loading scene.
+    Crafty.scene("loading");
     
-    // move - This components keeps track of all relevant states for movement, 
+    
+    // Components: //
+    
+    // move:
+    // This components keeps track of all relevant states for movement, 
     // such as "impulses" to discrete now and target position, 
     // and also the ticking movement function.
     Crafty.c("move", {
