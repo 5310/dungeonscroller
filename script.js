@@ -20,6 +20,54 @@ init = function() {
     Crafty.init(width, height);
     Crafty.canvas.init();
     
+    // Add an object to store global mouse states.
+    Crafty.extend({
+	mouse: {
+	    down: false,// current state of mouse
+	    x: 0,	// current cursor x position
+	    y: 0,	// ditto for y
+	    px: 0,	// last cursor x position
+	    py: 0,	// ditto for y
+	    // Triggers the global mouse-hold event once. Internal.
+	    triggerGlobalMouseHold: function() {
+		Crafty.trigger("GlobalMouseHold");
+	    }
+	}
+    });
+    // Set-up DOM event handlers to set global mouse-states and events.
+    {
+	// Get Crafty canvas.
+	var c = document.getElementsByTagName('canvas')[0];			//BUG: Is hackish; make absolute.
+	
+	// Function for when mouse is brought down.
+	var down = function(e) {
+	    // Sets global mouse-down flag.
+	    Crafty.mouse.down = true;
+	    // Initiates GlobalMouseHold event.
+	    Crafty.bind("EnterFrame", Crafty.mouse.triggerGlobalMouseHold);	    	    
+	};
+	c.onmousedown = down;							//TODO: Use Crafty.addEvent
+	
+	// Function for when mouse if moved up or away.
+	var up = function(e) {
+	    // Unsets global mouse-down flag.
+	    Crafty.mouse.down = false;
+	    // Revokes GlobalMouseHold event.
+	    Crafty.unbind("EnterFrame", Crafty.mouse.triggerGlobalMouseHold);
+	};
+	c.onmouseup = up;							//TODO: Use Crafty.addEvent
+	c.onmouseout = up;							//TODO: Use Crafty.addEvent
+	
+	// Function for when mouse moves. This sets the coordinates.
+	var move = function(e) {
+	    Crafty.mouse.px = Crafty.mouse.x;
+	    Crafty.mouse.py = Crafty.mouse.y;
+	    Crafty.mouse.x = e.offsetX;
+	    Crafty.mouse.y = e.offsetY;
+	};
+	c.onmousemove = move;							//TODO: Use Crafty.addEvent
+    }
+    
     
     // Scenes: //
     
@@ -174,14 +222,15 @@ init = function() {
 
 test = function() {
     
+    // A player entity.
     player = Crafty.e("2D, Canvas, sprite_adventurer, move")
 	.attr({x: 160, y: 96, w: 24, h: 24}) // for Component 2D
-	
-    
-    c = document.getElementsByTagName('canvas')[0];
-    var player_mouse_move = function(e) { 
-	var x = e.offsetX - player.x - player.w/2;
-	var y = e.offsetY - player.y - player.h/2;
+    // Mouse-based controls for player entity.
+    Crafty.bind("GlobalMouseHold", function() { 
+	// Calculate cursor position relative to entity.			//TODO: Make the entity NOT jitter restlessly once held position is reached.
+	var x = Crafty.mouse.x - player.x - player.w/2;
+	var y = Crafty.mouse.y - player.y - player.h/2;
+	// Initiate entity move based of relative location.
 	if ( Math.abs(x) > Math.abs(y) )
 	    if ( x > 0 )
 		player.move(1);
@@ -192,7 +241,6 @@ test = function() {
 		player.move(2);
 	    else
 		player.move(4);
-    };
-    c.onmousedown = player_mouse_move;
+    });
 	
 }
