@@ -121,14 +121,13 @@ init = function() {
 		var move = this._move;
 		var unit = 24;
 		
-		// Regulate speed.						//TODO: This will be changed to allow easing.
-		move.speed = this.speed;
-		
-		
 		switch ( move.state ) {
 		    
 		    case 0:	// Entity is ready to move.
-		    
+
+			// Reset speed to zero.
+			move.speed = 0;
+
 			// Trigger an event.
 			Crafty.trigger("MovementReady");
 			
@@ -136,6 +135,12 @@ init = function() {
 			break;
 		
 		    case 1: 	// If entity is moving:
+		    
+			// Regulate speed.
+			if ( move.speed < this.speed )
+			    move.speed += 0.2;
+			else
+			    move.speed = this.speed;
 
 			// Move entity.
 			this.x += move.mx*move.speed;
@@ -147,8 +152,9 @@ init = function() {
 			if ( (move.my > 0 && this.y >= move.oy) || (move.my < 0 && this.y <= move.oy) )
 			    this.y = move.oy;
 			
-			// If target reached, change state back to 0.
+			// If target reached: 
 			if ( this.x == move.ox && this.y == move.oy ) {
+			    // Change state back to 0.
 			    move.state = 0;
 			}
 			
