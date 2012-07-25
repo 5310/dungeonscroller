@@ -37,7 +37,7 @@ init = function() {
     // Set-up DOM event handlers to set global mouse-states and events.
     {
 	// Get Crafty canvas.
-	var c = document.getElementsByTagName('canvas')[0];			//BUG: Is hackish; make absolute.
+	var c = Crafty.stage.elem;
 	
 	// Function for when mouse is brought down.
 	var down = function(e) {
