@@ -84,9 +84,10 @@ init = function() {
 	
 	// Defining sprites.
 	Crafty.sprite(24, "static.png", {
-	    sprite_adventurer: [5, 2],
-	    sprite_bat: [5, 14],
 	    sprite_brick: [1, 39]
+	});
+	Crafty.sprite(24, "animated.png", {
+	    sprite_adventurer: [5, 1]
 	});
     
     });
@@ -226,19 +227,22 @@ init = function() {
 test = function() {
     
     // A player entity.
-    player = Crafty.e("2D, Canvas, sprite_adventurer, move")
-	.attr({x: 160, y: 96, w: 24, h: 24}) // for Component 2D
+    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation")
+	.attr({x: 160, y: 96, w: 24, h: 24}) 		// for Component 2D
+	.animate("sprite_adventurer_animated", 5, 1, 6)	// define animation
+	.animate("sprite_adventurer_animated", 45, -1); // set animation
+	
     // Mouse-based controls for player entity.
     Crafty.bind("GlobalMouseHold", function() { 
-	// Calculate cursor position relative to entity.
+	// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
 	var x = Crafty.mouse.x - player.x - player.w/2;
 	var y = Crafty.mouse.y - player.y - player.h/2;
 	// Initiate entity move based of relative location.
 	if ( Math.abs(x) > Math.abs(y) )
-	    if ( x > 0 )
-		player.move(1);
-	    else
-		player.move(3);
+		if ( x > 0 )
+		    player.move(1);
+		else
+		    player.move(3);
 	else
 	    if ( y > 0 )
 		player.move(2);
