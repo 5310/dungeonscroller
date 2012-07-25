@@ -18,6 +18,7 @@
 		# X	write a function to initiate directional movement so that angular movement is not possible
 		# X	add an event for when movement is possible
 		#	have the player's sprite accelerate when moving
+		#	make component out of test mouse-movement
 		#	write a component that decides which direction the player has moved from scrolling: control_scroll
 		#	add dependencies for these components
 	
