@@ -46,7 +46,8 @@ init = function() {
 	    // Initiates GlobalMouseHold event.
 	    Crafty.bind("EnterFrame", Crafty.mouse.triggerGlobalMouseHold);	    	    
 	};
-	c.onmousedown = down;							//TODO: Use Crafty.addEvent
+	// Add handler to relevant event.
+	Crafty.addEvent(Crafty, c, "mousedown", down);
 	
 	// Function for when mouse if moved up or away.
 	var up = function(e) {
@@ -55,8 +56,9 @@ init = function() {
 	    // Revokes GlobalMouseHold event.
 	    Crafty.unbind("EnterFrame", Crafty.mouse.triggerGlobalMouseHold);
 	};
-	c.onmouseup = up;							//TODO: Use Crafty.addEvent
-	c.onmouseout = up;							//TODO: Use Crafty.addEvent
+	// Add handler to relevant events.
+	Crafty.addEvent(Crafty, c, "mouseup", up);
+	Crafty.addEvent(Crafty, c, "mouseout", up);
 	
 	// Function for when mouse moves. This sets the coordinates.
 	var move = function(e) {
@@ -65,7 +67,8 @@ init = function() {
 	    Crafty.mouse.x = e.offsetX;
 	    Crafty.mouse.y = e.offsetY;
 	};
-	c.onmousemove = move;							//TODO: Use Crafty.addEvent
+	// Add handler to relevant event.
+	Crafty.addEvent(Crafty, c, "mousemove", move);
     }
     
     
@@ -227,7 +230,7 @@ test = function() {
 	.attr({x: 160, y: 96, w: 24, h: 24}) // for Component 2D
     // Mouse-based controls for player entity.
     Crafty.bind("GlobalMouseHold", function() { 
-	// Calculate cursor position relative to entity.			//TODO: Make the entity NOT jitter restlessly once held position is reached.
+	// Calculate cursor position relative to entity.
 	var x = Crafty.mouse.x - player.x - player.w/2;
 	var y = Crafty.mouse.y - player.y - player.h/2;
 	// Initiate entity move based of relative location.

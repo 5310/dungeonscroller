@@ -5,7 +5,7 @@
 @ 	game framework:
 	# X	write init function for Crafty
 	# X	set-up a loading and a main scene with appropriate functioning
-	#	set-up global mouse events and states extension to Crafty
+	# X	set-up global mouse events and states extension to Crafty
 	#	make init also add necessary margins to canvas autoamtically
 
 @	player:
