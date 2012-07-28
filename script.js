@@ -8,6 +8,7 @@ window.onload = function () {
 init = function() {
     
     // Setup: //
+    {
 	
     // Dimensions.
     var width = 1000;
@@ -68,9 +69,11 @@ init = function() {
 	Crafty.addEvent(Crafty, c, "mousemove", move);
     }
     
+    }
     
     // Scenes: //
-    
+    {
+	
     // Loading scene.
     Crafty.scene("loading", function() {
 	
@@ -97,9 +100,11 @@ init = function() {
     // Load the loading scene.
     Crafty.scene("loading");
     
+    }
     
     // Components: //
-    
+    {
+	
     // move:
     // This components keeps track of all relevant states for movement, 
     // such as "impulses" to discrete now and target position, 
@@ -225,6 +230,8 @@ init = function() {
 	}
     });
     
+    }
+    
 };
 
 test = function() {
@@ -235,6 +242,7 @@ test = function() {
 	.animate("sprite_adventurer_animated", 5, 1, 6)	// define animation
 	.animate("sprite_adventurer_animated", 45, -1); // set animation
 	
+    /* Test. Kept for posterity.
     // Mouse-based controls for player entity.
     Crafty.bind("GlobalMouseHold", function() { 
 	// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
@@ -251,6 +259,6 @@ test = function() {
 		player.move(2);
 	    else
 		player.move(4);
-    });
+    });*/
 	
 }
