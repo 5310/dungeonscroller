@@ -307,35 +307,83 @@ init = function() {
 		
 		// Move either horizontally of vertically:
 		if ( Math.abs(dx) > Math.abs(dy) ) {
+		    
 		    // Calculate distance scrolled in units.
 		    var d = Math.abs(dx)/unit;
+		    
 		    // If it is more than one:
 		    if ( d >= 1 ) {
-			    // Calculate direction.
-			    var m = dx > 0 ? 1 : 3;
-			    // For every unit of scroll:
-			    for ( var i = 0; i < d; i++ ) {
-				// Add direction to move commands list.
+			
+			// Calculate direction.
+			var m = dx > 0 ? 1 : 3;
+			
+			// For everx unit of scroll:
+			for ( var i = 0; i < d; i++ ) {
+			    
+			    // Add direction to move commands list.
+			    if ( ctrl_scroll.commands.length > 0 ) { 
+				if ( m == 1 ) {
+				    if ( ctrl_scroll.commands[ctrl_scroll.commands.length-1] == 3 ) { 
+					ctrl_scroll.commands.pop(); // If last command is opposite of current direction, nullifx both.
+				    } else { 
+					ctrl_scroll.commands.push(m); // Else, append command.
+				    }
+				}
+				if ( m == 3 ) {
+				    if ( ctrl_scroll.commands[ctrl_scroll.commands.length-1] == 1 ) {
+					ctrl_scroll.commands.pop();
+				    } else {
+					ctrl_scroll.commands.push(m);
+				    }
+				}
+			    } else {
 				ctrl_scroll.commands.push(m);
-				// And revert internal position for that amount.
-				ctrl_scroll.ix -= dx > 0 ? unit : -1*unit;
 			    }
+			    
+			    // And revert internal position for that amount.
+			    ctrl_scroll.ix -= dx > 0 ? unit : -1*unit;
+			}
 		    }
+		    
 		} else {
+		    
 		    // Calculate distance scrolled in units.
 		    var d = Math.abs(dy)/unit;
+		    
 		    // If it is more than one:
 		    if ( d >= 1 ) {
-			    // Calculate direction.
-			    var m = dy > 0 ? 2 : 4;
-			    // For every unit of scroll:
-			    for ( var i = 0; i < d; i++ ) {
-				// Add direction to move commands list.
+			
+			// Calculate direction.
+			var m = dy > 0 ? 2 : 4;
+			
+			// For every unit of scroll:
+			for ( var i = 0; i < d; i++ ) {
+			    
+			    // Add direction to move commands list.
+			    if ( ctrl_scroll.commands.length > 0 ) { 
+				if ( m == 2 ) {
+				    if ( ctrl_scroll.commands[ctrl_scroll.commands.length-1] == 4 ) { 
+					ctrl_scroll.commands.pop(); // If last command is opposite of current direction, nullify both.
+				    } else { 
+					ctrl_scroll.commands.push(m); // Else, append command.
+				    }
+				}
+				if ( m == 4 ) {
+				    if ( ctrl_scroll.commands[ctrl_scroll.commands.length-1] == 2 ) {
+					ctrl_scroll.commands.pop();
+				    } else {
+					ctrl_scroll.commands.push(m);
+				    }
+				}
+			    } else {
 				ctrl_scroll.commands.push(m);
-				// And revert internal position for that amount.
-				ctrl_scroll.iy -= dy > 0 ? unit : -1*unit;
 			    }
+			    
+			    // And revert internal position for that amount.
+			    ctrl_scroll.iy -= dy > 0 ? unit : -1*unit;
+			}
 		    }
+		    
 		}		
 		
 	    };
