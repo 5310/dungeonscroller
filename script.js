@@ -109,6 +109,7 @@ init = function() {
     // This components keeps track of all relevant states for movement, 
     // such as "impulses" to discrete now and target position, 
     // and also the ticking movement function.
+    // Depends on: 2D
     Crafty.c("move", {
 	speed: 1,		// Peak speed for entity.
 	_move: {		// Namespace for internal storage.
@@ -230,6 +231,35 @@ init = function() {
 	}
     });
     
+    // ctrl_mouse:
+    // This component is essentially a non-diagonal fourway joystick
+    // that moves the entity based on the clicked mouse's relative position.
+    // Depends on: move
+    Crafty.c("ctrl_mouse", {
+	init: function() {
+	    
+	    var player = this;
+	    
+	    Crafty.bind("GlobalMouseHold", function() { 
+		// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
+		var x = Crafty.mouse.x - player.x - player.w/2;
+		var y = Crafty.mouse.y - player.y - player.h/2;
+		// Initiate entity move based of relative location.
+		if ( Math.abs(x) > Math.abs(y) )
+			if ( x > 0 )
+			    player.move(1);
+			else
+			    player.move(3);
+		else
+		    if ( y > 0 )
+			player.move(2);
+		    else
+			player.move(4);
+	    });
+	    
+	}
+    });
+    
     }
     
 };
@@ -237,28 +267,9 @@ init = function() {
 test = function() {
     
     // A player entity.
-    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation")
+    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_mouse")
 	.attr({x: 160, y: 96, w: 24, h: 24}) 		// for Component 2D
 	.animate("sprite_adventurer_animated", 5, 1, 6)	// define animation
 	.animate("sprite_adventurer_animated", 45, -1); // set animation
-	
-    /* Test. Kept for posterity.
-    // Mouse-based controls for player entity.
-    Crafty.bind("GlobalMouseHold", function() { 
-	// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
-	var x = Crafty.mouse.x - player.x - player.w/2;
-	var y = Crafty.mouse.y - player.y - player.h/2;
-	// Initiate entity move based of relative location.
-	if ( Math.abs(x) > Math.abs(y) )
-		if ( x > 0 )
-		    player.move(1);
-		else
-		    player.move(3);
-	else
-	    if ( y > 0 )
-		player.move(2);
-	    else
-		player.move(4);
-    });*/
 	
 }

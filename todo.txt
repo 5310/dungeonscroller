@@ -17,7 +17,7 @@
 		# X	extend that component to do the actual movement animation and also set states for movement, runs every frame
 		# X	write a function to initiate directional movement so that angular movement is not possible
 		# X	add an event for when movement is possible
-		#	make component out of test mouse-movement
+		# X	make component out of test mouse-movement
 		#	write a component that decides which direction the player has moved from scrolling: control_scroll
 		#	add dependencies for these components
 	
