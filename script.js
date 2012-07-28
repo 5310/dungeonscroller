@@ -135,7 +135,7 @@ init = function() {
 			move.speed = 0;
 
 			// Trigger an event.
-			Crafty.trigger("MovementReady");
+			this.trigger("MovementReady");
 			
 			return;
 			break;
@@ -260,6 +260,95 @@ init = function() {
 	}
     });
     
+    // ctrl_scroll:
+    // What we're here for-- A component that will move the entity by scrolling the window.
+    // Depends on: move
+    Crafty.c("ctrl_scroll", {
+	_ctrl_scroll: {		// Internal storage.
+	    ix: 0,		// Internal non-discrete position, x.
+	    iy: 0,		// Ditto, y.
+	    lx: 0,		// Last horizontal scroll position.
+	    ly: 0,		// Ditto vertical.
+	    commands: [],	// Stack of movement commands calculated from scrolling.
+	    command: function() { 	// Will move the entity from the topmost command on stack.
+		this.move(this._ctrl_scroll.commands.pop());	    
+	    },
+	},
+	
+	init: function() {
+
+	    // Set shorthands.
+	    var ctrl_scroll = this._ctrl_scroll;
+	    var entity = this;
+	    var unit = 24;
+	    
+	    // Initialize internal non-discrete positions to zero.
+	    ctrl_scroll.ix = 0;
+	    ctrl_scroll.iy = 0;
+	    
+	    // Set previous-scroll.
+	    ctrl_scroll.lx = window.scrollX;
+	    ctrl_scroll.ly = window.scrollY;
+	    
+	    // Handler for when the page is scrolled.
+	    var scroll = function(e) {
+		
+		// Update internal non-discrete position.
+		ctrl_scroll.ix += window.scrollX - ctrl_scroll.lx;
+		ctrl_scroll.iy += window.scrollY - ctrl_scroll.ly;
+
+		// Update previous scroll-positions.
+		ctrl_scroll.lx = window.scrollX;
+		ctrl_scroll.ly = window.scrollY;
+		
+		// Calculate difference in scroll since last.
+		var dx = ctrl_scroll.ix;
+		var dy = ctrl_scroll.iy;
+		
+		// Move either horizontally of vertically:
+		if ( Math.abs(dx) > Math.abs(dy) ) {
+		    // Calculate distance scrolled in units.
+		    var d = Math.abs(dx)/unit;
+		    // If it is more than one:
+		    if ( d >= 1 ) {
+			    // Calculate direction.
+			    var m = dx > 0 ? 1 : 3;
+			    // For every unit of scroll:
+			    for ( var i = 0; i < d; i++ ) {
+				// Add direction to move commands list.
+				ctrl_scroll.commands.push(m);
+				// And revert internal position for that amount.
+				ctrl_scroll.ix -= dx > 0 ? unit : -1*unit;
+			    }
+		    }
+		} else {
+		    // Calculate distance scrolled in units.
+		    var d = Math.abs(dy)/unit;
+		    // If it is more than one:
+		    if ( d >= 1 ) {
+			    // Calculate direction.
+			    var m = dy > 0 ? 2 : 4;
+			    // For every unit of scroll:
+			    for ( var i = 0; i < d; i++ ) {
+				// Add direction to move commands list.
+				ctrl_scroll.commands.push(m);
+				// And revert internal position for that amount.
+				ctrl_scroll.iy -= dy > 0 ? unit : -1*unit;
+			    }
+		    }
+		}		
+		
+	    };
+	    // Add handler to relevant event.
+	    Crafty.addEvent(Crafty, window, "scroll", scroll);
+	    
+	    
+	    // Bind command function to when entity is ready to move.
+	    this.bind("MovementReady", ctrl_scroll.command);	
+	
+	}
+    });
+    
     }
     
 };
@@ -267,7 +356,7 @@ init = function() {
 test = function() {
     
     // A player entity.
-    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_mouse")
+    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_scroll")
 	.attr({x: 160, y: 96, w: 24, h: 24}) 		// for Component 2D
 	.animate("sprite_adventurer_animated", 5, 1, 6)	// define animation
 	.animate("sprite_adventurer_animated", 45, -1); // set animation
