@@ -398,15 +398,23 @@ init = function() {
     });
     
     }
+  
+    // Assemblages: //
+    
+    createPlayer = function(x, y) {
+	// Create entity with specific components.
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_scroll, ctrl_mouse")	//DEBUG: `ctrl_mouse` is for debug purposes only.
+	    .attr({x: x, y: y, w: 24, h: 24}) 			// Set position and size.
+	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
+	    .animate("sprite_adventurer_animated", 45, -1); 	// Set animation to play on loop.
+	return player;
+    };
     
 };
 
 test = function() {
     
     // A player entity.
-    player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_scroll")
-	.attr({x: 160, y: 96, w: 24, h: 24}) 		// for Component 2D
-	.animate("sprite_adventurer_animated", 5, 1, 6)	// define animation
-	.animate("sprite_adventurer_animated", 45, -1); // set animation
+    player = createPlayer(240, 240);
 	
 }

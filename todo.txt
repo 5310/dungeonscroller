@@ -19,13 +19,14 @@
 		# X	extend that component to do the actual movement animation and also set states for movement, runs every frame
 		# X	write a function to initiate directional movement so that angular movement is not possible
 		# X	add an event for when movement is possible
-		# X	make component out of test mouse-movement
-		# X	write a component that decides which direction the player has moved from scrolling: control_scroll
+		# X	make component out of test mouse-movement: ctrl_mouse
+		# X	write a component that decides which direction the player has moved from scrolling: ctrl_scroll
+	# X	wrap player entity in a nice closure
 	#	implement collisions:
 		#	add collision component and a smaller-than-unit hitbox
 		#	make collision with solid tiles reset movement
 		#	make hook for unit-unit collisions for damage and stuff
-	#	wrap player entity in a nice closure
+
 	
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
