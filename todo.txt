@@ -2,24 +2,28 @@
 	# X	add boilerplate files
 	# X	set up repository 
 
-@ 	game framework:
+@ 	system:
 	# X	write init function for Crafty
 	# X	set-up a loading and a main scene with appropriate functioning
 	# X	set-up global mouse events and states extension to Crafty
 	#	make init also add necessary margins to canvas autoamtically
+	#	add dependencies for custom components
 
 @	player:
-	#	set up player entity with default components
+	# X	set up player entity with default components
 	# X	add animated sprite, too
-	#	wrap it in a function
-	#	write custom components for movement:
+	# X	write custom components for movement:
 		# X	a component that stores movement by units, a discrete beginning position, and a discrete end position, and a state for movement animation: move
 		# X	extend that component to do the actual movement animation and also set states for movement, runs every frame
 		# X	write a function to initiate directional movement so that angular movement is not possible
 		# X	add an event for when movement is possible
 		# X	make component out of test mouse-movement
-		#	write a component that decides which direction the player has moved from scrolling: control_scroll
-		#	add dependencies for these components
+		# X	write a component that decides which direction the player has moved from scrolling: control_scroll
+	#	implement collisions:
+		#	add collision component and a smaller-than-unit hitbox
+		#	make collision with solid tiles reset movement
+		#	make hook for unit-unit collisions for damage and stuff
+	#	wrap player entity in a nice closure
 	
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
