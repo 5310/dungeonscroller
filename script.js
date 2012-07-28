@@ -112,7 +112,7 @@ init = function() {
     // Depends on: 2D
     Crafty.c("move", {
 	speed: 1,		// Peak speed for entity.
-	_move: {		// Namespace for internal storage.
+	_move: {		// Namespace for internal storage.		// Object properties MUST be cloned lest they all sync!
 	    mx: 0,		// Impulse along x axis in grid units.
 	    my: 0,		// Ditto for y.
 	    nx: 0,		// Storage for current/previous entity position in pixels by discrete grid units, x.
@@ -124,15 +124,14 @@ init = function() {
 	    tick: function() {	// Repeating function that does the actual movement.
 	    
 		// Shorthand for internal storage and other variables.
-		var move = this._move;
 		var unit = 24;
 		
-		switch ( move.state ) {
+		switch ( this._move.state ) {
 		    
 		    case 0:	// Entity is ready to move.
 
 			// Reset speed to zero.
-			move.speed = 0;
+			this._move.speed = 0;
 
 			// Trigger an event.
 			this.trigger("MovementReady");
@@ -143,25 +142,25 @@ init = function() {
 		    case 1: 	// If entity is moving:
 		    
 			// Regulate speed.
-			if ( move.speed < this.speed )
-			    move.speed += 0.2;
+			if ( this._move.speed < this.speed )
+			    this._move.speed += 0.2;
 			else
-			    move.speed = this.speed;
+			    this._move.speed = this.speed;
 
 			// Move entity.
-			this.x += move.mx*move.speed;
-			this.y += move.my*move.speed;
+			this.x += this._move.mx*this._move.speed;
+			this.y += this._move.my*this._move.speed;
 
 			// Snap entity to target if reached.
-			if ( (move.mx > 0 && this.x >= move.ox) || (move.mx < 0 && this.x <= move.ox) )
-			    this.x = move.ox;
-			if ( (move.my > 0 && this.y >= move.oy) || (move.my < 0 && this.y <= move.oy) )
-			    this.y = move.oy;
+			if ( (this._move.mx > 0 && this.x >= this._move.ox) || (this._move.mx < 0 && this.x <= this._move.ox) )
+			    this.x = this._move.ox;
+			if ( (this._move.my > 0 && this.y >= this._move.oy) || (this._move.my < 0 && this.y <= this._move.oy) )
+			    this.y = this._move.oy;
 			
 			// If target reached: 
-			if ( this.x == move.ox && this.y == move.oy ) {
+			if ( this.x == this._move.ox && this.y == this._move.oy ) {
 			    // Change state back to 0.
-			    move.state = 0;
+			    this._move.state = 0;
 			}
 			
 			return;
@@ -180,10 +179,9 @@ init = function() {
 	    //   4 = up
 	    
 	    // Shorthand and some variables.
-	    var move = this._move;
 	    var unit = 24;
 	    
-	    if ( move.state == 0 ) { // If entity ready to move.
+	    if ( this._move.state == 0 ) { // If entity ready to move.
 
 		// Set this._movement direction and sprite orientation.
 		switch ( direction ) {
@@ -227,6 +225,9 @@ init = function() {
 	    
 	},
 	init: function() {	// Initialization function for component.
+	    // Clone the internal namespace object.
+	    this._move = Crafty.clone(this._move);
+	    // Bind the tick.
 	    this.bind("EnterFrame", this._move.tick);
 	}
     });
@@ -238,23 +239,23 @@ init = function() {
     Crafty.c("ctrl_mouse", {
 	init: function() {
 	    
-	    var player = this;
+	    var entity = this;
 	    
 	    Crafty.bind("GlobalMouseHold", function() { 
 		// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
-		var x = Crafty.mouse.x - player.x - player.w/2;
-		var y = Crafty.mouse.y - player.y - player.h/2;
+		var x = Crafty.mouse.x - entity.x - entity.w/2;
+		var y = Crafty.mouse.y - entity.y - entity.h/2;
 		// Initiate entity move based of relative location.
 		if ( Math.abs(x) > Math.abs(y) )
 			if ( x > 0 )
-			    player.move(1);
+			    entity.move(1);
 			else
-			    player.move(3);
+			    entity.move(3);
 		else
 		    if ( y > 0 )
-			player.move(2);
+			entity.move(2);
 		    else
-			player.move(4);
+			entity.move(4);
 	    });
 	    
 	}
@@ -276,6 +277,9 @@ init = function() {
 	},
 	
 	init: function() {
+	    
+	    // Clone internal storage.
+	    this._ctrl_scroll = Crafty.clone(this._ctrl_scroll);
 
 	    // Set shorthands.
 	    var ctrl_scroll = this._ctrl_scroll;
@@ -301,21 +305,17 @@ init = function() {
 		ctrl_scroll.lx = window.scrollX;
 		ctrl_scroll.ly = window.scrollY;
 		
-		// Calculate difference in scroll since last.
-		var dx = ctrl_scroll.ix;
-		var dy = ctrl_scroll.iy;
-		
 		// Move either horizontally of vertically:
-		if ( Math.abs(dx) > Math.abs(dy) ) {
+		if ( Math.abs(ctrl_scroll.ix) > Math.abs(ctrl_scroll.iy) ) {
 		    
 		    // Calculate distance scrolled in units.
-		    var d = Math.abs(dx)/unit;
+		    var d = Math.abs(ctrl_scroll.ix)/unit;
 		    
 		    // If it is more than one:
 		    if ( d >= 1 ) {
 			
 			// Calculate direction.
-			var m = dx > 0 ? 1 : 3;
+			var m = ctrl_scroll.ix > 0 ? 1 : 3;
 			
 			// For everx unit of scroll:
 			for ( var i = 0; i < d; i++ ) {
@@ -341,20 +341,20 @@ init = function() {
 			    }
 			    
 			    // And revert internal position for that amount.
-			    ctrl_scroll.ix -= dx > 0 ? unit : -1*unit;
+			    ctrl_scroll.ix -= ctrl_scroll.ix > 0 ? unit : -1*unit;
 			}
 		    }
 		    
 		} else {
 		    
 		    // Calculate distance scrolled in units.
-		    var d = Math.abs(dy)/unit;
+		    var d = Math.abs(ctrl_scroll.iy)/unit;
 		    
 		    // If it is more than one:
 		    if ( d >= 1 ) {
 			
 			// Calculate direction.
-			var m = dy > 0 ? 2 : 4;
+			var m = ctrl_scroll.iy > 0 ? 2 : 4;
 			
 			// For every unit of scroll:
 			for ( var i = 0; i < d; i++ ) {
@@ -380,7 +380,7 @@ init = function() {
 			    }
 			    
 			    // And revert internal position for that amount.
-			    ctrl_scroll.iy -= dy > 0 ? unit : -1*unit;
+			    ctrl_scroll.iy -= ctrl_scroll.iy > 0 ? unit : -1*unit;
 			}
 		    }
 		    
