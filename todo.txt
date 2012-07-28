@@ -27,7 +27,6 @@
 		#	make collision with solid tiles reset movement
 		#	make hook for unit-unit collisions for damage and stuff
 
-	
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary

@@ -111,7 +111,7 @@ init = function() {
     // and also the ticking movement function.
     // Depends on: 2D
     Crafty.c("move", {
-	speed: 1,		// Peak speed for entity.
+	speed: 2,		// Peak speed for entity.
 	_move: {		// Namespace for internal storage.		// Object properties MUST be cloned lest they all sync!
 	    mx: 0,		// Impulse along x axis in grid units.
 	    my: 0,		// Ditto for y.
@@ -400,7 +400,8 @@ init = function() {
     }
   
     // Assemblages: //
-    
+    {
+	
     createPlayer = function(x, y) {
 	// Create entity with specific components.
 	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_scroll, ctrl_mouse")	//DEBUG: `ctrl_mouse` is for debug purposes only.
@@ -410,6 +411,8 @@ init = function() {
 	return player;
     };
     
+    }
+
 };
 
 test = function() {
