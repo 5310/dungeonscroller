@@ -11,7 +11,6 @@
 	# X	set-up global mouse events and states extension to Crafty
 	# X	massive bug, components (at least move > tick) is sharing states across entities
 		Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
-	#	make init also add necessary margins to canvas autoamtically
 	#	add dependencies for custom components
 
 @	player:
@@ -31,6 +30,18 @@
 	#	implement stats:
 		#	write hp component
 		#	make hook for unit-unit collisions for damage and stuff
+		
+@	map:
+	#	design format to store map data
+	#	set-up map-tiles assemblage
+	#	make assemblage that creates cell entities from data
+	#	make sure z-values are correct
+	@	staging:
+		#	rescale the stage based on map size
+		#	add necessary margins to canvas automatically
+	@	visibility:
+		#	hide all tiles upon generation
+		#	display tiles that the player is close to, maybe add a secondary reveal object to player via component
 
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
