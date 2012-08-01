@@ -25,9 +25,11 @@
 		# X	make component out of test mouse-movement: ctrl_mouse
 		# X	write a component that decides which direction the player has moved from scrolling: ctrl_scroll
 	# X	wrap player entity in a nice closure
-	#	implement collisions:
+	# X	implement collisions:
 		# X	add collision component and a smaller-than-unit hitbox
-		#	make collision with solid tiles reset movement
+		# X	make collision with solid tiles reset movement
+	#	implement stats:
+		#	write hp component
 		#	make hook for unit-unit collisions for damage and stuff
 
 @ X	artwork:

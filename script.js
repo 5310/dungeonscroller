@@ -168,6 +168,11 @@ init = function() {
 		
 		}
 		
+	    },
+	    hit: function(array) {
+		// If colliding with solid object, revoke entity movement.
+		this._move.ox = this._move.nx;
+		this._move.oy = this._move.ny;
 	    }
 	},
 	move: function( direction ) {	// Function to initiate movement.
@@ -225,10 +230,14 @@ init = function() {
 	    
 	},
 	init: function() {	// Initialization function for component.
+	    // Add dependencies if not present.					//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
+	    this.addComponent("Collision");
 	    // Clone the internal namespace object.
 	    this._move = Crafty.clone(this._move);
 	    // Bind the tick.
 	    this.bind("EnterFrame", this._move.tick);
+	    // Bind hit to collision handler.
+	    this.onHit("solid", this._move.hit);
 	}
     });
     
@@ -405,12 +414,14 @@ init = function() {
     createPlayer = function(x, y) {
 	// Set constants.
 	var unit = 24;
+	var margin = 2;
 	// Create entity with specific components.
-	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, ctrl_scroll, ctrl_mouse")	//DEBUG: `ctrl_mouse` is for debug purposes only.
-	    .attr({x: x, y: y, w: unit, h: unit}) 			// Set position and size.
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse")	
+										//DEBUG: `ctrl_mouse` is for debug purposes only.
+	    .attr({x: x, y: y, w: unit, h: unit}) 		// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
 	    .animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
-	    .collision([2, 2], [2, unit-2], [unit-2, unit-2], [unit-2, 2]);
+	    .collision([margin, margin], [margin, unit-margin], [unit-margin, unit-margin], [unit-margin, margin]);
 	return player;
     };
     
@@ -422,8 +433,7 @@ test = function() {
     
     // A player entity.
     player = createPlayer(240, 240);
-    player.onHit("sprite_brick", function(hit_array){console.log(hit_array);});
-    wall = Crafty.e("2D, Canvas, sprite_brick, ")
+    wall = Crafty.e("2D, Canvas, sprite_brick, solid")
 	.attr({x: 0, y: 0, w: 24, h: 24});
     
 	
