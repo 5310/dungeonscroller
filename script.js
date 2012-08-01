@@ -433,8 +433,20 @@ test = function() {
     
     // A player entity.
     player = createPlayer(240, 240);
-    wall = Crafty.e("2D, Canvas, sprite_brick, solid")
-	.attr({x: 0, y: 0, w: 24, h: 24});
+    
+    // Brick walls.
+    for ( var x = 0; x < 1000; x+=24 ) {
+	Crafty.e("2D, Canvas, sprite_brick, solid")
+	    .attr({x: x, y: 0, w: 24, h: 24});
+	Crafty.e("2D, Canvas, sprite_brick, solid")
+	    .attr({x: x, y: 984, w: 24, h: 24});
+    }
+    for ( var y = 24; y < 1000-24; y+=24 ) {
+	Crafty.e("2D, Canvas, sprite_brick, solid")
+	    .attr({x: 0, y: y, w: 24, h: 24});
+	Crafty.e("2D, Canvas, sprite_brick, solid")
+	    .attr({x: 984, y: y, w: 24, h: 24});
+    }
     
 	
 }
