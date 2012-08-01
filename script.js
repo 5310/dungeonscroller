@@ -11,8 +11,8 @@ init = function() {
     {
 	
     // Dimensions.
-    var width = 1000;
-    var height = 1000;
+    var width = 1200;
+    var height = 1200;
     
     // Initialize Crafty.
     Crafty.init(width, height);
@@ -435,17 +435,17 @@ test = function() {
     player = createPlayer(240, 240);
     
     // Brick walls.
-    for ( var x = 0; x < 1000; x+=24 ) {
+    for ( var x = 0; x < Crafty.stage.elem.offsetWidth; x+=24 ) {
 	Crafty.e("2D, Canvas, sprite_brick, solid")
 	    .attr({x: x, y: 0, w: 24, h: 24});
 	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: x, y: 984, w: 24, h: 24});
+	    .attr({x: x, y: Crafty.stage.elem.offsetHeight-24, w: 24, h: 24});
     }
-    for ( var y = 24; y < 1000-24; y+=24 ) {
+    for ( var y = 24; y < Crafty.stage.elem.offsetHeight-24; y+=24 ) {
 	Crafty.e("2D, Canvas, sprite_brick, solid")
 	    .attr({x: 0, y: y, w: 24, h: 24});
 	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: 984, y: y, w: 24, h: 24});
+	    .attr({x: Crafty.stage.elem.offsetWidth-24, y: y, w: 24, h: 24});
     }
     
 	
