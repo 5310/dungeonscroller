@@ -2,8 +2,8 @@
 	# X	add boilerplate files
 	# X	set up repository 
 	# X	publish to Github along the way
-	#	create a gh-pages branch
-	#	make a post-commit hook to overwrite gh-pages with master
+	# X	create a gh-pages branch
+	# X	make a post-commit hook to overwrite gh-pages with master
 
 @ 	system:
 	# X	write init function for Crafty

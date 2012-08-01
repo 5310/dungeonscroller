@@ -432,7 +432,7 @@ init = function() {
 test = function() {
     
     // A player entity.
-    player = createPlayer(240, 240);
+    player = createPlayer(120, 120);
     
     // Brick walls.
     for ( var x = 0; x < Crafty.stage.elem.offsetWidth; x+=24 ) {
