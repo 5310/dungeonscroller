@@ -403,11 +403,14 @@ init = function() {
     {
 	
     createPlayer = function(x, y) {
+	// Set constants.
+	var unit = 24;
 	// Create entity with specific components.
-	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, ctrl_scroll, ctrl_mouse")	//DEBUG: `ctrl_mouse` is for debug purposes only.
-	    .attr({x: x, y: y, w: 24, h: 24}) 			// Set position and size.
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, ctrl_scroll, ctrl_mouse")	//DEBUG: `ctrl_mouse` is for debug purposes only.
+	    .attr({x: x, y: y, w: unit, h: unit}) 			// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
-	    .animate("sprite_adventurer_animated", 45, -1); 	// Set animation to play on loop.
+	    .animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
+	    .collision([2, 2], [2, unit-2], [unit-2, unit-2], [unit-2, 2]);
 	return player;
     };
     
@@ -419,5 +422,9 @@ test = function() {
     
     // A player entity.
     player = createPlayer(240, 240);
+    player.onHit("sprite_brick", function(hit_array){console.log(hit_array);});
+    wall = Crafty.e("2D, Canvas, sprite_brick, ")
+	.attr({x: 0, y: 0, w: 24, h: 24});
+    
 	
 }

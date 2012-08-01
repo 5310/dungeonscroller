@@ -26,7 +26,7 @@
 		# X	write a component that decides which direction the player has moved from scrolling: ctrl_scroll
 	# X	wrap player entity in a nice closure
 	#	implement collisions:
-		#	add collision component and a smaller-than-unit hitbox
+		# X	add collision component and a smaller-than-unit hitbox
 		#	make collision with solid tiles reset movement
 		#	make hook for unit-unit collisions for damage and stuff
 
