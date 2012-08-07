@@ -11,8 +11,9 @@ init = function() {
     setup: { 
 	
 	// Dimensions.
-	var width = 1200;
-	var height = 1200;
+	width = 1200;
+	height = 1200;
+	unit = 24;
 	
 	// Initialize Crafty.
 	Crafty.init(width, height);
@@ -125,9 +126,6 @@ init = function() {
 		state: 0,		// State to control movement: 0 = ready to move. 1 = moving.
 		speed: 0,		// Current speed.
 		tick: function() {	// Repeating function that does the actual movement.
-		
-		    // Shorthand for internal storage and other variables.
-		    var unit = 24;
 		    
 		    switch ( this._move.state ) {
 			
@@ -185,9 +183,6 @@ init = function() {
 		//	 2 = down
 		//	 3 = left
 		//   4 = up
-		
-		// Shorthand and some variables.
-		var unit = 24;
 		
 		if ( this._move.state == 0 ) { // If entity ready to move.
 
@@ -296,7 +291,6 @@ init = function() {
 		// Set shorthands.
 		var ctrl_scroll = this._ctrl_scroll;
 		var entity = this;
-		var unit = 24;
 		
 		// Initialize internal non-discrete positions to zero.
 		ctrl_scroll.ix = 0;
@@ -409,6 +403,9 @@ init = function() {
 	    }
 	});
     
+	// solid:
+	// A label-only component for entities that are solid and impede movement.
+    
     }
   
     // Implements Assemblage functions for Entities.
@@ -416,7 +413,6 @@ init = function() {
 	
 	createPlayer = function(x, y) {
 	    // Set constants.
-	    var unit = 24;
 	    var margin = 2;
 	    // Create entity with specific components.
 	    var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse")	
