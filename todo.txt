@@ -31,8 +31,14 @@
 		#	make hook for unit-unit collisions for damage and stuff
 		
 @	map:
-	#	design format to store map data
+	# X	design format to store map data:
+		a base raster layer for terrain: walls, and floors, etc
+		an additional layer for doors, traps, switches, treasures, and enemies; implemented as a textual list with co-ordinates
 	# X	set-up map-tiles assemblage
+	#	make a test map:
+		#	settle on a palette
+		#	create the raster base layer
+		#	make list of map-entities
 	#	make assemblage that creates cell entities from data
 	# X	make sure z-values are correct
 	@	staging:
