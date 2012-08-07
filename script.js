@@ -88,7 +88,17 @@ init = function() {
 	    
 	    // Defining sprites.
 	    Crafty.sprite(24, "static.png", {
-		sprite_brick: [1, 39]
+		sprite_brick: [1, 39],
+		sprite_floor1: [4, 42],
+		sprite_floor2: [4, 43],
+		sprite_floor3: [10, 42],
+		sprite_floor4: [10, 43],
+		sprite_trapoff: [3, 49],
+		sprite_trapon: [4, 49],
+		sprite_dooroff: [1, 38],
+		sprite_dooron: [2, 38],
+		sprite_switchoff: [3, 37],
+		sprite_switchon: [4, 37]
 	    });
 	    Crafty.sprite(24, "animated.png", {
 		sprite_adventurer: [5, 1]
@@ -113,7 +123,7 @@ init = function() {
 	// This components keeps track of all relevant states for movement, 
 	// such as "impulses" to discrete now and target position, 
 	// and also the ticking movement function.
-	// Depends on: 2D
+	// Depends on: 2D, Collision
 	Crafty.c("move", {
 	    speed: 2,		// Peak speed for entity.
 	    _move: {		// Namespace for internal storage.		// Object properties MUST be cloned lest they all sync!
@@ -228,7 +238,7 @@ init = function() {
 		
 	    },
 	    init: function() {	// Initialization function for component.
-		// Add dependencies if not present.					//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
+		// Add dependencies if not present.				//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
 		this.addComponent("Collision");
 		// Clone the internal namespace object.
 		this._move = Crafty.clone(this._move);
@@ -281,8 +291,7 @@ init = function() {
 		command: function() { 	// Will move the entity from the topmost command on stack.
 		    this.move(this._ctrl_scroll.commands.pop());	    
 		},
-	    },
-	    
+	    },	    
 	    init: function() {
 		
 		// Clone internal storage.
@@ -403,25 +412,108 @@ init = function() {
 	    }
 	});
     
+	// fow:
+	// Component that would simulate a fog-of-war.
+	// Entities with this component will begin invisibly. 
+	// Additionally, they serve as labels for collision with player, which renders them visible again.
+	// Depends on: 2D
+	Crafty.c("fow", {
+	    init: function() {		
+		//this.visible = false;						//DEBUG: Visibility toggling not yet implemented yet. So we'll keep it visible.
+	    }
+	});
+	
+	// eye:
+	// Has behavior that would render nearby entities with fow components visible upon collision.
+	// Depends on: collision
+	Crafty.c("eye", {
+	    init: function() {		
+										//TODO:
+										// This is unacceptable. Fow visibility toggles should be based upon proximity alone.
+										// Using MovementReady; event and making all nearby fow entities by component.
+										
+		/*// Add dependencies if not present.				//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
+		this.addComponent("Collision");
+		
+		// Handler for collision with fow entities.
+		var hit_fow = function(list) {
+		    //console.log("ahem");
+		    for ( var i = 0; i < list.length; i++ )
+			list[i].obj.visible = true;
+		};
+		
+		// Bind collision-handler with fow entities.
+		this.onHit("fow", hit_fow);*/
+		
+	    }
+	});
+    
 	// solid:
 	// A label-only component for entities that are solid and impede movement.
+    
+	// trap:								//TODO:
+	
+	// door:								//TODO:
     
     }
   
     // Implements Assemblage functions for Entities.
     assemblages: {
 	
+	// The player object.
 	createPlayer = function(x, y) {
 	    // Set constants.
 	    var margin = 2;
 	    // Create entity with specific components.
-	    var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse")	
-										    //DEBUG: `ctrl_mouse` is for debug purposes only.
-		.attr({x: x, y: y, w: unit, h: unit}) 		// Set position and size.
+	    var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player")	
+										//DEBUG: `ctrl_mouse` is for debug purposes only.
+		.attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
 		.animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
 		.animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
 		.collision([margin, margin], [margin, unit-margin], [unit-margin, unit-margin], [unit-margin, margin]);
 	    return player;
+	};
+	
+	// Impassable wall tile.
+	createWall = function(x, y) {
+	    // Create entity with specific components.
+	    var tile = Crafty.e("2D, Canvas, solid, sprite_brick, fow")
+		.attr({x: x, y: y, z: 0, w: unit, h: unit});
+	    return tile;
+	};
+	
+	// Randomly styled floor tile.
+	createFloor = function(x, y) {
+	    // Randomize floor type.
+	    var sprite_no = Math.floor(Math.random()*4)+1;
+	    // Create entity with specific components.
+	    var tile = Crafty.e("2D, Canvas, sprite_floor"+sprite_no)
+		.attr({x: x, y: y, z: 0, w: unit, h: unit});
+	    return tile;
+	};
+	
+	// A floor trap that springs when a live entity walks over it.
+	createTrap = function(x, y) {
+	    // Create entity with specific components.
+	    var tile = Crafty.e("2D, Canvas, fow, trap")			//TODO: trap component unimplemented
+		.attr({x: x, y: y, z: 1, w: unit, h: unit});
+	    return tile;
+	};
+	
+	// A switch that toggles the specified entity.
+	createSwitch = function(x, y, target) {
+	    // Create entity with specific components.
+	    var tile = Crafty.e("2D, Canvas, fow, switch")			//TODO: switch component unimplemented
+		.attr({x: x, y: y, z: 1, w: unit, h: unit});
+	    return tile;
+	};
+	
+	// A door that may or may not impede entry.
+	createDoor = function(x, y, target) {
+	    // Create entity with specific components.
+	    var tile = Crafty.e("2D, Canvas, fow, door")			//TODO: door component unimplemented
+		.attr({x: x, y: y, z: 1, w: unit, h: unit});
+	    return tile;
 	};
     
     }
@@ -435,16 +527,12 @@ test = function() {
     
     // Brick walls.
     for ( var x = 0; x < Crafty.stage.elem.offsetWidth; x+=24 ) {
-	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: x, y: 0, w: 24, h: 24});
-	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: x, y: Crafty.stage.elem.offsetHeight-24, w: 24, h: 24});
+	createWall(x, 0);
+	createWall(x, Crafty.stage.elem.offsetHeight-24);
     }
     for ( var y = 24; y < Crafty.stage.elem.offsetHeight-24; y+=24 ) {
-	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: 0, y: y, w: 24, h: 24});
-	Crafty.e("2D, Canvas, sprite_brick, solid")
-	    .attr({x: Crafty.stage.elem.offsetWidth-24, y: y, w: 24, h: 24});
+	createWall(0, y);
+	createWall(Crafty.stage.elem.offsetWidth-24, y);
     }
 	
 }

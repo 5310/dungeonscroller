@@ -32,18 +32,18 @@
 		
 @	map:
 	#	design format to store map data
-	#	set-up map-tiles assemblage
+	# X	set-up map-tiles assemblage
 	#	make assemblage that creates cell entities from data
-	#	make sure z-values are correct
+	# X	make sure z-values are correct
 	@	staging:
 		#	rescale the stage based on map size
 		#	add necessary margins to canvas automatically
-	@	visibility:
-		#	hide all tiles upon generation
-		#	display tiles that the player is close to, maybe add a secondary reveal object to player via component
+	@ 	visibility:
+		# X	hide all tiles upon generation
+		#	implement eye component that reveals hidden tiles by proximity
 
 @ 	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
-	#	define sprites
+	#	make all sprites opaque
