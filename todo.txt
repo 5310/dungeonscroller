@@ -42,8 +42,7 @@
 		# X	hide all tiles upon generation
 		#	implement eye component that reveals hidden tiles by proximity
 
-@ 	artwork:
+@ X	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
-	#	make all sprites opaque
