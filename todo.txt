@@ -5,13 +5,12 @@
 	# X	create a gh-pages branch
 	# X	make a post-commit hook to overwrite gh-pages with master
 
-@ 	system:
+@ X	system:
 	# X	write init function for Crafty
 	# X	set-up a loading and a main scene with appropriate functioning
 	# X	set-up global mouse events and states extension to Crafty
 	# X	massive bug, components (at least move > tick) is sharing states across entities
 		Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
-	#	add dependencies for custom components
 
 @	player:
 	# X	set up player entity with default components
@@ -43,7 +42,8 @@
 		#	hide all tiles upon generation
 		#	display tiles that the player is close to, maybe add a secondary reveal object to player via component
 
-@ X	artwork:
+@ 	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
+	#	define sprites
