@@ -11,10 +11,10 @@ init = function() {
     setup: { 
 	
 	// Pre-reads map to get its dimensions.					//TODO:
-	var map_width = 10;
-	var map_height = 10;
-	var scroll_width = 10;
-	var scroll_height = 10;
+	map_width = 10;
+	map_height = 10;
+	scroll_width = 5;
+	scroll_height = 5;
 	
 	// Calculate viewport dimensions.
 	unit = 24;
@@ -25,8 +25,13 @@ init = function() {
 	Crafty.init(width, height);
 	Crafty.canvas.init();
 	
-	// Resize container by scrolling-leeway.				//TODO:
-	
+	// Resize container by scrolling-leeway.
+	// Add margins to Crafty stage in order to center it.
+	var c = Crafty.stage.elem;
+	c.style.marginLeft = c.style.marginRight = ( ( window.innerWidth + (scroll_width-map_width)*unit  ) / 2 )+"px";
+	c.style.marginTop = c.style.marginBottom = ( ( window.innerHeight + (scroll_height-map_height)*unit ) / 2 ) +"px";
+	// Resize body horizontally, since it doesn't fit otherwise.
+	document.body.style.width = ( window.innerWidth + scroll_width*unit )+"px";
     }
 	
     // Extend Crafty for custom use.
@@ -137,7 +142,7 @@ init = function() {
 test = function() {								//DEBUG:
     
     // A player entity.
-    player = createPlayer(120, 120);
+    player = createPlayer(2*unit, 2*unit);
     
     // Brick walls.
     for ( var x = 0; x < Crafty.viewport.width; x+=24 ) {
