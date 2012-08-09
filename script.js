@@ -11,8 +11,10 @@ init = function() {
     setup: { 
 	
 	// Pre-reads map to get its dimensions.					//TODO:
-	var map_width = 50;
-	var map_height = 50;
+	var map_width = 10;
+	var map_height = 10;
+	var scroll_width = 10;
+	var scroll_height = 10;
 	
 	// Calculate viewport dimensions.
 	unit = 24;
@@ -22,6 +24,8 @@ init = function() {
 	// Initialize Crafty.
 	Crafty.init(width, height);
 	Crafty.canvas.init();
+	
+	// Resize container by scrolling-leeway.				//TODO:
 	
     }
 	
