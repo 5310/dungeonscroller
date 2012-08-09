@@ -140,13 +140,13 @@ test = function() {								//DEBUG:
     player = createPlayer(120, 120);
     
     // Brick walls.
-    for ( var x = 0; x < Crafty.stage.elem.offsetWidth; x+=24 ) {
+    for ( var x = 0; x < Crafty.viewport.width; x+=24 ) {
 	createWall(x, 0);
-	createWall(x, Crafty.stage.elem.offsetHeight-24);
+	createWall(x, Crafty.viewport.height-24);
     }
-    for ( var y = 24; y < Crafty.stage.elem.offsetHeight-24; y+=24 ) {
+    for ( var y = 24; y < Crafty.viewport.height-24; y+=24 ) {
 	createWall(0, y);
-	createWall(Crafty.stage.elem.offsetWidth-24, y);
+	createWall(Crafty.viewport.width-24, y);
     }
 	
 }
