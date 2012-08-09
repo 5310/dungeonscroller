@@ -5,15 +5,19 @@ window.onload = function () {
 
 
 // This function will be run once to set-up the game.
-init = function() {
+init = function() {								
     
     // Sets up Crafty and global extensions.
     setup: { 
 	
-	// Dimensions.
-	width = 1200;
-	height = 1200;
+	// Pre-reads map to get its dimensions.					//TODO:
+	var map_width = 50;
+	var map_height = 50;
+	
+	// Calculate viewport dimensions.
 	unit = 24;
+	width = map_width*unit;
+	height = map_height*unit;
 	
 	// Initialize Crafty.
 	Crafty.init(width, height);
