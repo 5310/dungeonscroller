@@ -7,7 +7,7 @@ window.onload = function () {
 // This function will be run once to set-up the game.
 init = function() {								
     
-    // Sets up Crafty and global extensions.
+    // Sets up Crafty.
     setup: { 
 	
 	// Pre-reads map to get its dimensions.					//TODO:
@@ -23,6 +23,11 @@ init = function() {
 	Crafty.init(width, height);
 	Crafty.canvas.init();
 	
+    }
+	
+    // Extend Crafty for custom use.
+    extend: {
+    
 	// Add an object to store global mouse states.
 	Crafty.extend({
 	    mouse: {
