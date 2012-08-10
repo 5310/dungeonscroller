@@ -17,6 +17,8 @@ init = function() {
 	map_height = mapdata.map.length;
 	scroll_width = mapdata.scroll.x;
 	scroll_height = mapdata.scroll.y;
+	origin_width = mapdata.origin.x;
+	origin_height = mapdata.origin.y;
 	
 	// Calculate viewport dimensions.
 	unit = 24;
@@ -34,6 +36,8 @@ init = function() {
 	c.style.marginTop = c.style.marginBottom = ( ( window.innerHeight + (scroll_height-map_height)*unit ) / 2 ) +"px";
 	// Resize body horizontally, since it doesn't fit otherwise.
 	document.body.style.width = ( window.innerWidth + scroll_width*unit )+"px";
+	// Scroll document to center origin.
+	window.scrollBy(mapdata.origin.x*unit, mapdata.origin.y*unit);
     }
 	
     // Extend Crafty for custom use.
@@ -144,7 +148,7 @@ init = function() {
 test = function() {								//DEBUG:
     
     // A player entity.
-    player = createPlayer(1*unit, 1*unit);
+    player = createPlayer(mapdata.origin.x*unit, mapdata.origin.y*unit);
     
     // Draw map.
     createMap(mapdata);

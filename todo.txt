@@ -46,7 +46,8 @@
 	@	switches:
 		#	write switch and switchable components
 		#	change map-drawing assemblage to new syntax where any values between 10 and 20 are switches, and the unit digit is its channel
-	@	try to load mapdata synchronously
+	@ X	offset for player and initial scroll
+	@	gold!
 
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
