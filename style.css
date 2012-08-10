@@ -1,5 +1,2 @@
-#cr-stage {
-}
-#cr-stage > canvas {
-	background: silver;
-}
+#cr-stage {}
+#cr-stage > canvas {}
