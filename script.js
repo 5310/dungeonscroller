@@ -476,31 +476,30 @@ components: {
     // Depends on: 2D
     Crafty.c("fow", {
 	init: function() {		
-	    //this.visible = false;						//DEBUG: Visibility toggling not yet implemented yet. So we'll keep it visible.
+	    this.visible = false;						//DEBUG: Visibility toggling not yet implemented yet. So we'll keep it visible.
 	}
     });
     
     // eye:
     // Has behavior that would render nearby entities with fow components visible upon collision.
-    // Depends on: collision
+    // Depends on: collision, move
     Crafty.c("eye", {
-	init: function() {		
-									    //TODO:
-									    // This is unacceptable. Fow visibility toggles should be based upon proximity alone.
-									    // Using MovementReady; event and making all nearby fow entities by component.
-									    
-	    /*// Add dependencies if not present.				//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
-	    this.addComponent("Collision");
+	init: function() {	
 	    
-	    // Handler for collision with fow entities.
-	    var hit_fow = function(list) {
-		//console.log("ahem");
-		for ( var i = 0; i < list.length; i++ )
-		    list[i].obj.visible = true;
-	    };
+	    var makeVisible = function() {
+		// Collect ids of all fow entities and iterate through them:
+		var fows = Crafty("fow");
+		for ( var i = 0; i < fows.length; i++ ) {
+		    // Get the actual entity.
+		    var fow = Crafty(fows[i]);
+		    // If entity is close enough to this entity, make it visible.
+		    if ( Math.sqrt( Math.pow(fow.x-this.x, 2) + Math.pow(fow.y-this.y, 2) ) <= 2*unit )
+			fow.visible = true;
+		}
+	    }
 	    
-	    // Bind collision-handler with fow entities.
-	    this.onHit("fow", hit_fow);*/
+	    // Bind command function to when entity is ready to move.
+	    this.bind("MovementReady", makeVisible);
 	    
 	}
     });
@@ -524,7 +523,7 @@ assemblages: {
 	// Set constants.
 	var margin = 2;
 	// Create entity with specific components.
-	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player")	
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player, eye")	
 									    //DEBUG: `ctrl_mouse` is for debug purposes only.
 	    .attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
@@ -546,7 +545,7 @@ assemblages: {
 	// Randomize floor type.
 	var sprite_no = Math.floor(Math.random()*4)+1;
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, sprite_floor"+sprite_no)
+	var tile = Crafty.e("2D, Canvas, fow, sprite_floor"+sprite_no)
 	    .attr({x: x, y: y, z: 0, w: unit, h: unit});
 	return tile;
     };

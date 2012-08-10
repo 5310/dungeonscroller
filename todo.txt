@@ -40,9 +40,9 @@
 	@ X	staging:
 		# X	rescale the stage based on map size
 		# X	add necessary margins to canvas automatically
-	@ 	visibility:
+	@ X	visibility:
 		# X	hide all tiles upon generation
-		#	implement eye component that reveals hidden tiles by proximity
+		# X	implement eye component that reveals hidden tiles by proximity
 	@	switches:
 		#	write switch and switchable components
 		#	change map-drawing assemblage to new syntax where any values between 10 and 20 are switches, and the unit digit is its channel
