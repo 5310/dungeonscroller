@@ -144,7 +144,7 @@ init = function() {
 test = function() {								//DEBUG:
     
     // A player entity.
-    player = createPlayer(2*unit, 2*unit);
+    player = createPlayer(1*unit, 1*unit);
     
     // Draw map.
     createMap(mapdata);
