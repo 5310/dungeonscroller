@@ -32,7 +32,7 @@ init = function() {
 
 	}
 	
-	// Pre-reads map to get its dimensions.					//TODO:
+	// Pre-reads map to get its dimensions.
 	map_width = mapdata.map[0].length;
 	map_height = mapdata.map.length;
 	scroll_width = mapdata.scroll.x;
@@ -295,7 +295,7 @@ components: {
 	    
 	},
 	init: function() {	// Initialization function for component.
-	    // Add dependencies if not present.				//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
+	    // Add dependencies if not present.					//BUG: This should NOT be necessary. I've added `move` after `Collision` on the entity.
 	    this.addComponent("Collision");
 	    // Clone the internal namespace object.
 	    this._move = Crafty.clone(this._move);
@@ -316,7 +316,7 @@ components: {
 	    var entity = this;
 	    
 	    Crafty.bind("GlobalMouseHold", function() { 
-		// Calculate cursor position relative to entity.			// Since camera does not follow, entity reaches cursor, and jitters.
+		// Calculate cursor position relative to entity.		// Since camera does not follow, entity reaches cursor, and jitters.
 		var x = Crafty.mouse.x - entity.x - entity.w/2;
 		var y = Crafty.mouse.y - entity.y - entity.h/2;
 		// Initiate entity move based of relative location.
@@ -507,9 +507,9 @@ components: {
     // solid:
     // A label-only component for entities that are solid and impede movement.
 
-    // trap:								//TODO:
+    // trap:									//TODO:
     
-    // door:								//TODO:
+    // door:									//TODO:
 
 }
 
@@ -524,7 +524,7 @@ assemblages: {
 	var margin = 2;
 	// Create entity with specific components.
 	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player, eye")	
-									    //DEBUG: `ctrl_mouse` is for debug purposes only.
+										//DEBUG: `ctrl_mouse` is for debug purposes only.
 	    .attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
 	    .animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
@@ -553,7 +553,7 @@ assemblages: {
     // A floor trap that springs when a live entity walks over it.
     createTrap = function(x, y) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, trap")			//TODO: trap component unimplemented
+	var tile = Crafty.e("2D, Canvas, fow, trap")				//TODO: component unimplemented
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
@@ -561,7 +561,7 @@ assemblages: {
     // A switch that toggles the specified entity.
     createSwitch = function(x, y, target) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, switch")			//TODO: switch component unimplemented
+	var tile = Crafty.e("2D, Canvas, fow, switch")				//TODO: component unimplemented
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
@@ -569,7 +569,7 @@ assemblages: {
     // A door that may or may not impede entry.
     createDoor = function(x, y, target) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, door")			//TODO: door component unimplemented
+	var tile = Crafty.e("2D, Canvas, fow, door")				//TODO: component unimplemented
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
