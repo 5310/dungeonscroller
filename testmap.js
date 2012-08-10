@@ -50,6 +50,6 @@ mapdata = {
 	
 	"scroll": {"x": 15, "y": 15},
 	
-	"origin": {"x": 3, "y": 3}
+	"origin": {"x": 8, "y": 6}
 
 }
