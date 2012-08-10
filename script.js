@@ -10,11 +10,33 @@ init = function() {
     // Sets up Crafty.
     setup: { 
 	
+	// Load mapdata.							//TODO:
+	mapdata = {
+
+	    "map": [
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+		[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	    ],
+	    
+	    "scroll": {"x": 5, "y": 5}
+
+	}
+	
 	// Pre-reads map to get its dimensions.					//TODO:
-	map_width = 10;
-	map_height = 10;
-	scroll_width = 5;
-	scroll_height = 5;
+	map_width = mapdata.map[0].length;
+	map_height = mapdata.map.length;
+	scroll_width = mapdata.scroll.x;
+	scroll_height = mapdata.scroll.y;
 	
 	// Calculate viewport dimensions.
 	unit = 24;
@@ -144,15 +166,8 @@ test = function() {								//DEBUG:
     // A player entity.
     player = createPlayer(2*unit, 2*unit);
     
-    // Brick walls.
-    for ( var x = 0; x < Crafty.viewport.width; x+=24 ) {
-	createWall(x, 0);
-	createWall(x, Crafty.viewport.height-24);
-    }
-    for ( var y = 24; y < Crafty.viewport.height-24; y+=24 ) {
-	createWall(0, y);
-	createWall(Crafty.viewport.width-24, y);
-    }
+    // Draw map.
+    createMap(mapdata);
 	
 }
 
@@ -558,6 +573,34 @@ assemblages: {
 	var tile = Crafty.e("2D, Canvas, fow, door")			//TODO: door component unimplemented
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
+    };
+    
+    // Draw the map from mapdata. This toos hould be run only once.
+    createMap = function(mapdata) {
+	
+	// Iterate through mapdata:
+	for ( var y = 0; y < mapdata.map.length; y++ ) {
+	    for ( var x = 0; x < mapdata.map[0].length; x++ ) {
+		
+		// For specific code of tiles:
+		switch(mapdata.map[y][x]) {
+		    
+		    case 0: 	//floor
+			createFloor(x*unit, y*unit);
+			break;
+			
+		    case 1: 	//wall
+			createWall(x*unit, y*unit);
+			break;
+			
+		    default:	//nothing
+			break;
+			
+		}
+		
+	    }
+	}
+	
     };
 
 }
