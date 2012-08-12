@@ -26,7 +26,7 @@ mapdata = {
         "        X......................X",
         "        X......................X",
         "        XXXXXXXXXXXXXXXXXXXXxXXX",
-        "                           x.x  ",
+        "                           X.X  ",
         "                         XXX.XXX",
         "                         X.....X",
         "                         X.....X",
@@ -36,7 +36,7 @@ mapdata = {
     
     "size": {"x": 32, "y": 16},
     
-    "origin": {"x": 12, "y": 3},
+    "origin": {"x": 28, "y": 8},
 	
 	"scroll": {"x": 20, "y": 20}
 	

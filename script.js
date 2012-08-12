@@ -490,6 +490,27 @@ components: {
 
     // solid:
     // A label-only component for entities that are solid and impede movement.
+    
+    // voh:
+    // This component hides the entity when touched by the player and creates a floor-tile instead.
+    Crafty.c("voh", {
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("Collision");
+	    
+	    // Destory and floor function.
+	    var hit = function() {
+		createFloor(this.x, this.y);
+		this.destroy();
+	    }
+	    
+	    // Bind vanishing function to hit.
+	    this.onHit("player", hit);
+	    
+	}
+    });
+    
 
     // trap:									//TODO:
     
@@ -527,8 +548,8 @@ assemblages: {
     // Passable wall tile.							//TODO: Should disappear upon passage by player.
     createWallSecret = function(x, y) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, sprite_brick, fow")
-	    .attr({x: x, y: y, z: 0, w: unit, h: unit});
+	var tile = Crafty.e("2D, Canvas, sprite_brick, voh")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
     
@@ -584,8 +605,8 @@ assemblages: {
 			createWall(x*unit, y*unit);
 			break;
 			
-		    case "x": 	//secretwall					//TODO:
-			createWallSecret(x*unit, y*unit);			
+		    case "x": 	//secretwall
+			createWallSecret(x*unit, y*unit);		
 			break;
 			
 		    default:	//nothing
