@@ -13,8 +13,8 @@ init = function() {
 	// Load mapdata.							//TODO:
 	
 	// Pre-reads map to get its dimensions.
-	map_width = mapdata.map[0].length;
-	map_height = mapdata.map.length;
+	map_width = mapdata.size.x;
+	map_height = mapdata.size.y;
 	scroll_width = mapdata.scroll.x;
 	scroll_height = mapdata.scroll.y;
 	origin_width = mapdata.origin.x;
@@ -563,17 +563,21 @@ assemblages: {
 	
 	// Iterate through mapdata:
 	for ( var y = 0; y < mapdata.map.length; y++ ) {
-	    for ( var x = 0; x < mapdata.map[0].length; x++ ) {
-		
+	    var row = mapdata.map[y].split('');
+	    for ( var x = 0; x < row.length; x++ ) {
 		// For specific code of tiles:
-		switch(mapdata.map[y][x]) {
+		switch(row[x]) {
 		    
-		    case 0: 	//floor
+		    case ".": 	//floor
 			createFloor(x*unit, y*unit);
 			break;
 			
-		    case 1: 	//wall
+		    case "X": 	//wall
 			createWall(x*unit, y*unit);
+			break;
+			
+		    case "x": 	//secretwall					//TODO:
+			createWall(x*unit, y*unit);			
 			break;
 			
 		    default:	//nothing
