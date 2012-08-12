@@ -524,6 +524,14 @@ assemblages: {
 	return tile;
     };
     
+    // Passable wall tile.							//TODO: Should disappear upon passage by player.
+    createWallSecret = function(x, y) {
+	// Create entity with specific components.
+	var tile = Crafty.e("2D, Canvas, sprite_brick, fow")
+	    .attr({x: x, y: y, z: 0, w: unit, h: unit});
+	return tile;
+    };
+    
     // Randomly styled floor tile.
     createFloor = function(x, y) {
 	// Randomize floor type.
@@ -577,7 +585,7 @@ assemblages: {
 			break;
 			
 		    case "x": 	//secretwall					//TODO:
-			createWall(x*unit, y*unit);			
+			createWallSecret(x*unit, y*unit);			
 			break;
 			
 		    default:	//nothing
