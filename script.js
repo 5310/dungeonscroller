@@ -491,8 +491,12 @@ components: {
     // solid:
     // A label-only component for entities that are solid and impede movement.
     
+    // heavy:
+    // A label-only component that should be used by anything that moves to trigger switches.
+    
     // voh:
     // This component hides the entity when touched by the player and creates a floor-tile instead.
+    // Depends on: collision
     Crafty.c("voh", {
 	init: function() {
 	    
@@ -511,10 +515,111 @@ components: {
 	}
     });
     
+    // signal:
+    // A simple value component that will denote the channel of signals to use for an Entityś other components.
+    Crafty.c("signal", {signal: 0});
 
-    // trap:									//TODO:
+    // trap:
+    // This component makes the entity a trap that listens to whatever signal channel has been set and toggles itself.
+    // Depends on: signal
+    Crafty.c("trap", {
+	
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_trapon");
+	    
+	    // Set scope for global event handler.
+	    var self = this;
+	    
+	    // Bind the handler to the event.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function(hitlist) {		//TODO: Damage hitters.
+		if ( self.has("sprite_trapon") ) {
+		    self.removeComponent("sprite_trapon", false);
+		    self.addComponent("sprite_trapoff");
+		} else {
+		    self.removeComponent("sprite_trapoff", false);
+		    self.addComponent("sprite_trapon");
+		}
+	    });
+	    
+	}	
+		
+    });
     
-    // door:									//TODO:
+    // door:
+    // This component makes the entity a door that listens to whatever signal channel has been set and toggles itself.
+    // Depends on: signal
+    Crafty.c("door", {
+	
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_dooron");
+	    
+	    // Set scope for global event handler.
+	    var self = this;
+	    
+	    // Bind the handler to the event.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function(hitlist) {		//TODO: Damage hitters.
+		if ( self.has("sprite_dooron") ) {
+		    self.removeComponent("sprite_dooron", false);
+		    self.removeComponent("solid", false);
+		    self.addComponent("sprite_dooroff");
+		} else {
+		    self.removeComponent("sprite_dooroff", false);
+		    self.addComponent("sprite_dooron");
+		    self.addComponent("solid");
+		}
+	    });
+	    
+	}	
+		
+    });
+    
+    // switch:
+    // A tile that will trigger a certain signal when stepped on by anything heavy.
+    // Depends on: collision, signal
+    Crafty.c("switch", {
+	_switch: {
+	    active: true,
+	    ready: true,
+	    toggle: function(hitlist) {
+		// If ready, toggle.
+		if ( this._switch.ready ) {
+		    if ( this._switch.active ) {
+			this.removeComponent("sprite_switchon", false);
+			this.addComponent("sprite_switchoff");
+			this._switch.active = false;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal, hitlist);
+		    } else {
+			this.removeComponent("sprite_switchoff", false);
+			this.addComponent("sprite_switchon");
+			this._switch.active = true;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal, hitlist);
+		    }
+		    this._switch.ready = false;
+		    // Wait 1sec to become ready again.
+		    this.timeout( 
+			function() { this._switch.ready = true }, 1000);	// Using this.timeout instead of setTimeOut directly preserves 'this' to the entity.
+		}
+	    }
+	},
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_switchon, Collision");
+	    
+	    // Clone the internal namespace object.
+	    this._switch = Crafty.clone(this._switch);
+	    
+	    var that = this;
+	    
+	    // Bind the handlers to the events.
+	    this.onHit("heavy", this._switch.toggle);
+	    
+	}		
+    });
 
 }
 
@@ -528,7 +633,7 @@ assemblages: {
 	// Set constants.
 	var margin = 2;
 	// Create entity with specific components.
-	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player, eye")	
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player, eye, heavy")	
 										//DEBUG: `ctrl_mouse` is for debug purposes only.
 	    .attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
@@ -564,26 +669,32 @@ assemblages: {
     };
     
     // A floor trap that springs when a live entity walks over it.
-    createTrap = function(x, y) {
+    createTrap = function(x, y, signal) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, trap")				//TODO: component unimplemented
-	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
+	var tile = Crafty.e("2D, Canvas, fow")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
+	    .attr({signal: signal})
+	    .addComponent("trap");
 	return tile;
     };
     
     // A switch that toggles the specified entity.
-    createSwitch = function(x, y, target) {
+    createSwitch = function(x, y, signal) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, switch")				//TODO: component unimplemented
-	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
+	var tile = Crafty.e("2D, Canvas, fow, switch")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
+	    .attr({signal: signal})
+	    .addComponent("switch");
 	return tile;
     };
     
     // A door that may or may not impede entry.
-    createDoor = function(x, y, target) {
+    createDoor = function(x, y, signal) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow, door")				//TODO: component unimplemented
-	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
+	var tile = Crafty.e("2D, Canvas, fow")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
+	    .attr({signal: signal})
+	    .addComponent("door");
 	return tile;
     };
     
@@ -607,6 +718,36 @@ assemblages: {
 			
 		    case "x": 	//secretwall
 			createWallSecret(x*unit, y*unit);		
+			break;
+			
+		    case "1": 	//switch 1
+			createSwitch(x*unit, y*unit, 1);	
+			break;
+		    case "2": 	//switch 2
+			createSwitch(x*unit, y*unit, 2);	
+			break;
+		    case "3": 	//switch 3
+			createSwitch(x*unit, y*unit, 3);	
+			break;
+			
+		    case "A": 	//trap
+			createTrap(x*unit, y*unit, 1);
+			break;
+		    case "B": 	//trap
+			createTrap(x*unit, y*unit, 2);
+			break;
+		    case "C": 	//trap
+			createTrap(x*unit, y*unit, 3);
+			break;
+			
+		    case "H": 	//trap
+			createDoor(x*unit, y*unit, 1);
+			break;
+		    case "J": 	//trap
+			createDoor(x*unit, y*unit, 2);
+			break;
+		    case "K": 	//trap
+			createDoor(x*unit, y*unit, 3);
 			break;
 			
 		    default:	//nothing
