@@ -533,7 +533,7 @@ components: {
 	    var self = this;
 	    
 	    // Bind the handler to the event.
-	    Crafty.bind("GlobalSwitchToggle"+this.signal, function(hitlist) {		//TODO: Damage hitters.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {	
 		if ( self.has("sprite_trapon") ) {
 		    self.removeComponent("sprite_trapon", false);
 		    self.addComponent("sprite_trapoff");
@@ -561,7 +561,7 @@ components: {
 	    var self = this;
 	    
 	    // Bind the handler to the event.
-	    Crafty.bind("GlobalSwitchToggle"+this.signal, function(hitlist) {		//TODO: Damage hitters.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {		
 		if ( self.has("sprite_dooron") ) {
 		    self.removeComponent("sprite_dooron", false);
 		    self.removeComponent("solid", false);
@@ -584,19 +584,19 @@ components: {
 	_switch: {
 	    active: true,
 	    ready: true,
-	    toggle: function(hitlist) {
+	    toggle: function() {
 		// If ready, toggle.
 		if ( this._switch.ready ) {
 		    if ( this._switch.active ) {
 			this.removeComponent("sprite_switchon", false);
 			this.addComponent("sprite_switchoff");
 			this._switch.active = false;
-			Crafty.trigger("GlobalSwitchToggle"+this.signal, hitlist);
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
 		    } else {
 			this.removeComponent("sprite_switchoff", false);
 			this.addComponent("sprite_switchon");
 			this._switch.active = true;
-			Crafty.trigger("GlobalSwitchToggle"+this.signal, hitlist);
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
 		    }
 		    this._switch.ready = false;
 		    // Wait 1sec to become ready again.
