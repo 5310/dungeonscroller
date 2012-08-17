@@ -692,8 +692,7 @@ assemblages: {
 	// Set constants.
 	var margin = 2;
 	// Create entity with specific components.
-	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, ctrl_mouse, player, eye, heavy")	
-										//DEBUG: `ctrl_mouse` is for debug purposes only.
+	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, player, eye, heavy")
 	    .attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
 	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
 	    .animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
