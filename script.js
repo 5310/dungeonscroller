@@ -128,7 +128,8 @@ init = function() {
 		sprite_dooron: [2, 38],
 		sprite_switchoff: [3, 37],
 		sprite_switchon: [4, 37],
-		sprite_gold: [1, 24]
+		sprite_gold: [1, 24],
+		sprite_skull: [2, 27]
 	    });
 	    Crafty.sprite(24, "animated.png", {
 		sprite_adventurer: [5, 1]
@@ -459,6 +460,33 @@ components: {
 	}
     });
 
+    // player:
+    // The player entity. Used as a label by a lot of components, and checks if player has hit a trap.
+    // Depends on: 2D, Collision, move
+    Crafty.c("player", {
+	init: function (hitlist) {
+	
+	    // Hit handler.
+	    var hit = function (hitlist) {
+		for ( var i = 0; i < hitlist.length; i++ ) {
+		    if ( hitlist[i].obj.active ) {
+			if ( this.visible ) {
+			    this.visible = false;
+			    this.speed = 0;
+			    createDeath();
+			    Crafty.e("2D, Canvas, sprite_skull").attr({x: this.x, y: this.y, z: 10, w: unit, h: unit});
+			}
+			return;
+		    }
+		}
+	    };
+	
+	    // Bind handler.
+	    this.onHit("trap", hit);
+	    
+	}
+    });
+
     // fow:
     // Component that would simulate a fog-of-war.
     // Entities with this component will begin invisibly. 
@@ -529,7 +557,7 @@ components: {
     // This component makes the entity a trap that listens to whatever signal channel has been set and toggles itself.
     // Depends on: signal
     Crafty.c("trap", {
-	
+	active: true,
 	init: function() {
 	    
 	    // Add Collision component.
@@ -543,9 +571,11 @@ components: {
 		if ( self.has("sprite_trapon") ) {
 		    self.removeComponent("sprite_trapon", false);
 		    self.addComponent("sprite_trapoff");
+		    self.active = false;
 		} else {
 		    self.removeComponent("sprite_trapoff", false);
 		    self.addComponent("sprite_trapon");
+		    self.active = true;
 		}
 	    });
 	    
@@ -799,5 +829,10 @@ assemblages: {
 	}
 	
     };
+
+    // Draws the death-message on screen with score.
+    createDeath = function() {
+	console.log(123);
+    }
 
 }

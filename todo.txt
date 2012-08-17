@@ -28,9 +28,9 @@
 		# X	add collision component and a smaller-than-unit hitbox
 		# X	make collision with solid tiles reset movement
 	#	death:
-		#	intercept collision with active traps
-		#	place skull on map
-		#	let player freely pan the map to see how much he has explored
+		# X	intercept collision with active traps
+		# X	place skull on map
+		# X	let player freely pan the map to see how much he has explored
 		#	display pop-up on top saying "You have died! You collected X of Y gold. Try again?" which will reload map if clicked.
 		
 @	map:
