@@ -13,7 +13,7 @@
 		Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
 	# X	dynamically pad the document to provide desirable-length scrolling.
 
-@	player:
+@ X	player:
 	# X	set up player entity with default components
 	# X	add animated sprite, too
 	# X	write custom components for movement:
@@ -27,9 +27,10 @@
 	# X	implement collisions:
 		# X	add collision component and a smaller-than-unit hitbox
 		# X	make collision with solid tiles reset movement
-	#	implement stats:
-		#	write hp component
-		#	make hook for unit-unit collisions for damage and stuff
+	#	death:
+		#	intercept collision with active traps
+		#	place skull on map
+		#	let player freely pan the map to see how much he has explored
 		
 @	map:
 	# X	design format to store map data
@@ -49,9 +50,15 @@
 	@ X	secret wall passages
 		If trying to remove a sprite, do it hard! 
 	@ X	offset for player and initial scroll
-	@	gold!
+	@ X	gold!
+	@	a small hud on the bottom will show score in gained/available format
+	#	design a fun-enough map!
 
 @ X	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
+	
+#	release
+	#	update readme
+	#	document map-making

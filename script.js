@@ -42,6 +42,11 @@ init = function() {
 	
     // Extend Crafty for custom use.
     extend: {
+	
+	// Global score variable.
+	Crafty.extend({
+	    score: 0
+	});
     
 	// Add an object to store global mouse states.
 	Crafty.extend({
@@ -122,7 +127,8 @@ init = function() {
 		sprite_dooroff: [1, 38],
 		sprite_dooron: [2, 38],
 		sprite_switchoff: [3, 37],
-		sprite_switchon: [4, 37]
+		sprite_switchon: [4, 37],
+		sprite_gold: [1, 24]
 	    });
 	    Crafty.sprite(24, "animated.png", {
 		sprite_adventurer: [5, 1]
@@ -621,6 +627,28 @@ components: {
 	}		
     });
 
+    // gold:
+    // When walked over by player, increments score.
+    // Depends on: Collision
+    Crafty.c("point", {
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("Collision");
+	   
+	    // Destory and floor function.
+	    var hit = function() {
+		Crafty.score += 1
+		createFloor(this.x, this.y);
+		this.destroy();
+	    }
+	    
+	    // Bind function to hit.
+	    this.onHit("player", hit);
+	   
+	}
+    });
+
 }
 
 
@@ -650,10 +678,18 @@ assemblages: {
 	return tile;
     };
     
-    // Passable wall tile.							//TODO: Should disappear upon passage by player.
+    // Passable wall tile.
     createWallSecret = function(x, y) {
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, sprite_brick, voh")
+	var tile = Crafty.e("2D, Canvas, sprite_brick, voh, fow")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
+	return tile;
+    };
+    
+    // Gold!
+    createGold = function(x, y) {
+	// Create entity with specific components.
+	var tile = Crafty.e("2D, Canvas, sprite_gold, fow, point")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
@@ -748,6 +784,10 @@ assemblages: {
 			break;
 		    case "K": 	//trap
 			createDoor(x*unit, y*unit, 3);
+			break;
+			
+		    case "$":	//gold
+			createGold(x*unit, y*unit, 3);
 			break;
 			
 		    default:	//nothing
