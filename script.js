@@ -592,7 +592,7 @@ components: {
 	init: function() {
 	    
 	    // Add Collision component.
-	    this.addComponent("sprite_dooron");
+	    this.addComponent("sprite_dooron, solid");
 	    
 	    // Set scope for global event handler.
 	    var self = this;

@@ -23,6 +23,5 @@
 }
 #cr-stage { 
 	position: absolute;
-	background: gray; 
 }
 #cr-stage > canvas {}
