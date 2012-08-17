@@ -45,7 +45,8 @@ init = function() {
 	
 	// Global score variable.
 	Crafty.extend({
-	    score: 0
+	    score: 0,
+	    total: 0
 	});
     
 	// Add an object to store global mouse states.
@@ -818,6 +819,7 @@ assemblages: {
 			
 		    case "$":	//gold
 			createGold(x*unit, y*unit, 3);
+			Crafty.total += 1;
 			break;
 			
 		    default:	//nothing
@@ -832,7 +834,11 @@ assemblages: {
 
     // Draws the death-message on screen with score.
     createDeath = function() {
-	console.log(123);
+	// Set scores.
+	document.getElementById("goldcollected").innerHTML= ""+Crafty.score;
+	document.getElementById("goldtotal").innerHTML= ""+Crafty.total;
+	// Display message.
+	document.getElementById("deathmessage").style.visibility = "visible";
     }
 
 }
