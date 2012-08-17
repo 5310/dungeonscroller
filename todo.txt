@@ -52,12 +52,14 @@
 		If trying to remove a sprite, do it hard! 
 	@ X	offset for player and initial scroll
 	@ X	gold!
+	@	write assemblages for off door and traps
 	#	design a fun-enough map!
 
-@ X	artwork:
+@ 	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
+	#	minimize sprite "sheet"
 	
 #	release
 	#	update readme
