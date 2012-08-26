@@ -10,8 +10,9 @@
 	# X	set-up a loading and a main scene with appropriate functioning
 	# X	set-up global mouse events and states extension to Crafty
 	# X	massive bug, components (at least move > tick) is sharing states across entities
-		Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
+		-	Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
 	# X	dynamically pad the document to provide desirable-length scrolling.
+	# Apparently `this.required("components")` is a thing. See for yourself and use it.
 
 @ X	player:
 	# X	set up player entity with default components
@@ -27,7 +28,7 @@
 	# X	implement collisions:
 		# X	add collision component and a smaller-than-unit hitbox
 		# X	make collision with solid tiles reset movement
-	#	death:
+	# X	death:
 		# X	intercept collision with active traps
 		# X	place skull on map
 		# X	let player freely pan the map to see how much he has explored
