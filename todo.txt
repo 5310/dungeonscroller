@@ -12,7 +12,7 @@
 	# X	massive bug, components (at least move > tick) is sharing states across entities
 		-	Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
 	# X	dynamically pad the document to provide desirable-length scrolling.
-	# 	Apparently `this.required("components")` is a thing. See for yourself and use it.
+	? 	Apparently `this.required("components")` is a thing. See for yourself and use it.
 
 @ X	player:
 	# X	set up player entity with default components
@@ -34,7 +34,7 @@
 		# X	let player freely pan the map to see how much he has explored
 		# X	display pop-up on top saying "You have died! You collected X of Y gold. Try again?" which will reload map if clicked.
 		
-@	map:
+@ X	map:
 	# X	design format to store map data
 	# X	set-up map-tiles assemblage
 	# X	make a test map
@@ -46,22 +46,22 @@
 	@ X	visibility:
 		# X	hide all tiles upon generation
 		# X	implement eye component that reveals hidden tiles by proximity
-	@	switches:
-		#	write switch and switchable components
-		#	change map-drawing assemblage to new syntax where any values between 10 and 20 are switches, and the unit digit is its channel
+	@ X	switches:
+		# X	write switch and switchable components
+		# X	change map-drawing assemblage to new syntax where any values between 10 and 20 are switches, and the unit digit is its channel
 	@ X	secret wall passages
 		If trying to remove a sprite, do it hard! 
 	@ X	offset for player and initial scroll
 	@ X	gold!
 	@ X	write assemblages for off door and traps
-	#	design a fun-enough map!
 
-@ 	artwork:
+@ X	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
-	#	minimize sprite "sheet"
+	# X	minimize sprite "sheet"
 	
 #	release
+	#	design a fun-enough map!
 	#	update readme
 	#	document map-making
