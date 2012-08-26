@@ -117,23 +117,21 @@ init = function() {
 	    });
 	    
 	    // Defining sprites.
-	    Crafty.sprite(24, "static.png", {
-		sprite_brick: [1, 39],
-		sprite_floor1: [4, 42],
-		sprite_floor2: [4, 43],
-		sprite_floor3: [10, 42],
-		sprite_floor4: [10, 43],
-		sprite_trapoff: [3, 49],
-		sprite_trapon: [4, 49],
-		sprite_dooroff: [1, 38],
-		sprite_dooron: [2, 38],
-		sprite_switchoff: [3, 37],
-		sprite_switchon: [4, 37],
-		sprite_gold: [1, 24],
-		sprite_skull: [2, 27]
-	    });
-	    Crafty.sprite(24, "animated.png", {
-		sprite_adventurer: [5, 1]
+	    Crafty.sprite(24, "sprites.png", {
+		sprite_brick: [3, 1],
+		sprite_floor1: [0, 1],
+		sprite_floor2: [0, 2],
+		sprite_floor3: [1, 1],
+		sprite_floor4: [1, 2],
+		sprite_trapoff: [0, 3],
+		sprite_trapon: [1, 3],
+		sprite_dooroff: [2, 2],
+		sprite_dooron: [3, 2],
+		sprite_switchoff: [2, 3],
+		sprite_switchon: [3, 3],
+		sprite_gold: [3, 0],
+		sprite_skull: [2, 0],
+		sprite_adventurer: [0, 0]
 	    });
 	
 	});
@@ -694,7 +692,7 @@ assemblages: {
 	// Create entity with specific components.
 	var player = Crafty.e("2D, Canvas, sprite_adventurer, move, SpriteAnimation, Collision, solid, ctrl_scroll, player, eye, heavy")
 	    .attr({x: x, y: y, z: 10, w: unit, h: unit}) 	// Set position and size.
-	    .animate("sprite_adventurer_animated", 5, 1, 6)	// Define animation sequence.
+	    .animate("sprite_adventurer_animated", 0, 0, 1)	// Define animation sequence.
 	    .animate("sprite_adventurer_animated", 45, -1) 	// Set animation to play on loop.
 	    .collision([margin, margin], [margin, unit-margin], [unit-margin, unit-margin], [unit-margin, margin]);
 	return player;
