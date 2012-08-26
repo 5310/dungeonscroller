@@ -12,7 +12,7 @@
 	# X	massive bug, components (at least move > tick) is sharing states across entities
 		-	Lesson learned. If you're going to use objects for internal storage for components, CLONE THEM IN INIT FIRST!
 	# X	dynamically pad the document to provide desirable-length scrolling.
-	# Apparently `this.required("components")` is a thing. See for yourself and use it.
+	# 	Apparently `this.required("components")` is a thing. See for yourself and use it.
 
 @ X	player:
 	# X	set up player entity with default components
@@ -53,7 +53,7 @@
 		If trying to remove a sprite, do it hard! 
 	@ X	offset for player and initial scroll
 	@ X	gold!
-	@	write assemblages for off door and traps
+	@ X	write assemblages for off door and traps
 	#	design a fun-enough map!
 
 @ 	artwork:

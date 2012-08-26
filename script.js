@@ -735,32 +735,51 @@ assemblages: {
     };
     
     // A floor trap that springs when a live entity walks over it.
-    createTrap = function(x, y, signal) {
+    createTrap = function(x, y, signal, state) {
+	// Set state for the togglable entity.
 	// Create entity with specific components.
 	var tile = Crafty.e("2D, Canvas, fow")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
 	    .attr({signal: signal})
 	    .addComponent("trap");
+	// Set entity to off if asked.
+	if ( typeof(state) !== 'undefined' && !state ) {
+	    tile.removeComponent("sprite_trapon", false);
+	    tile.addComponent("sprite_trapoff");
+	    tile.active = false;
+	}
 	return tile;
     };
     
     // A switch that toggles the specified entity.
-    createSwitch = function(x, y, signal) {
+    createSwitch = function(x, y, signal, state) {
 	// Create entity with specific components.
 	var tile = Crafty.e("2D, Canvas, fow, switch")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
 	    .attr({signal: signal})
 	    .addComponent("switch");
+	// Set entity to off if asked.
+	if ( typeof(state) !== 'undefined' && !state ) {
+	    tile.removeComponent("sprite_switchon", false);
+	    tile.addComponent("sprite_switchoff");
+	    tile._switch.active = false;
+	}
 	return tile;
     };
     
     // A door that may or may not impede entry.
-    createDoor = function(x, y, signal) {
+    createDoor = function(x, y, signal, state) {
 	// Create entity with specific components.
 	var tile = Crafty.e("2D, Canvas, fow")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
 	    .attr({signal: signal})
 	    .addComponent("door");
+	// Set entity to off if asked.
+	if ( typeof(state) !== 'undefined' && !state ) {
+	    tile.removeComponent("sprite_dooron", false);
+	    tile.removeComponent("solid", false);
+	    tile.addComponent("sprite_dooroff");
+	}
 	return tile;
     };
     
@@ -796,24 +815,44 @@ assemblages: {
 			createSwitch(x*unit, y*unit, 3);	
 			break;
 			
-		    case "A": 	//trap
+		    case "A": 	//trap on
 			createTrap(x*unit, y*unit, 1);
 			break;
-		    case "B": 	//trap
+		    case "B": 	//trap on
 			createTrap(x*unit, y*unit, 2);
 			break;
-		    case "C": 	//trap
+		    case "C": 	//trap on
 			createTrap(x*unit, y*unit, 3);
 			break;
 			
-		    case "H": 	//trap
+		    case "a": 	//trap off
+			createTrap(x*unit, y*unit, 1, false);
+			break;
+		    case "b": 	//trap off
+			createTrap(x*unit, y*unit, 2, false);
+			break;
+		    case "c": 	//trap off
+			createTrap(x*unit, y*unit, 3, false);
+			break;
+			
+		    case "H": 	//door closed
 			createDoor(x*unit, y*unit, 1);
 			break;
-		    case "J": 	//trap
+		    case "J": 	//door closed
 			createDoor(x*unit, y*unit, 2);
 			break;
-		    case "K": 	//trap
+		    case "K": 	//door closed
 			createDoor(x*unit, y*unit, 3);
+			break;
+			
+		    case "h": 	//door open
+			createDoor(x*unit, y*unit, 1, false);
+			break;
+		    case "j": 	//door open
+			createDoor(x*unit, y*unit, 2, false);
+			break;
+		    case "k": 	//door open
+			createDoor(x*unit, y*unit, 3, false);
 			break;
 			
 		    case "$":	//gold
