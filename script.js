@@ -112,7 +112,7 @@ init = function() {
 	Crafty.scene("loading", function() {
 	    
 	    // Loading assets.
-	    Crafty.load(["static.png", "animated.png"], function() {
+	    Crafty.load(["sprites.png", "sprites_new.png"], function() {
 		Crafty.scene("main"); //when everything is loaded, run the main scene
 	    });
 	    
@@ -133,6 +133,21 @@ init = function() {
 		sprite_skull: [2, 0],
 		sprite_adventurer: [0, 0]
 	    });
+	    
+	    /*// Defining sprites.
+	    Crafty.sprite(24, "sprites_new.png", {
+		sprite_brick: [3, 1],
+		sprite_floor1: [0, 1],
+		sprite_floor2: [0, 2],
+		sprite_floor3: [1, 1],
+		sprite_floor4: [1, 2],
+		sprite_rock1: [2, 2],
+		sprite_rock2: [3, 2],
+		sprite_trap: [2, 1],
+		sprite_gold: [3, 0],
+		sprite_skull: [2, 0],
+		sprite_adventurer: [0, 0]
+	    });*/
 	
 	});
 	

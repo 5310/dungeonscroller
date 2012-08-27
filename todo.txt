@@ -57,17 +57,22 @@
 	@ X	offset for player and initial scroll
 	@ X	gold!
 	@ X	write assemblages for off door and traps
+	#	redo components and assemblages:
+		#	new rock tile and assemblage
+		#	trap has no off state
+		#	all switches and doors have hard-wired channels, and only three
+		#	gold, traps, doors, and switches do not create a floor underneath anymore
 
-@ 	artwork:
+@ X artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
 	# X	minimize sprite "sheet"
-	#	fine a more menacing tile for the traps
-	#	add a natural rock tile for cave walls
-	#	add accent colors to the sprites, which is easier than coming up with similar but unique doors and switches:
-		#	one for each channel of signals, red is for traps
-		#	gold for gold
+	# X	fine a more menacing tile for the traps
+	# X	add a natural rock tile for cave walls
+	# X	add accent colors to the sprites, which is easier than coming up with similar but unique doors and switches:
+		# X	one for each channel of signals, red is for traps
+		# X	gold for gold
 	
 #	release
 	# X	design a fun-enough map!
