@@ -14,7 +14,7 @@
 	# X	dynamically pad the document to provide desirable-length scrolling.
 	? 	Apparently `this.required("components")` is a thing. See for yourself and use it.
 
-@ X	player:
+@ 	player:
 	# X	set up player entity with default components
 	# X	add animated sprite, too
 	# X	write custom components for movement:
@@ -33,6 +33,9 @@
 		# X	place skull on map
 		# X	let player freely pan the map to see how much he has explored
 		# X	display pop-up on top saying "You have died! You collected X of Y gold. Try again?" which will reload map if clicked.
+	#	victory:
+		#	implement victory when all gold is collected
+		#	show message and be done with it
 		
 @ X	map:
 	# X	design format to store map data
@@ -55,13 +58,19 @@
 	@ X	gold!
 	@ X	write assemblages for off door and traps
 
-@ X	artwork:
+@ 	artwork:
 	# X	copy over Oryx' spritesheets
 	# X	edit as necessary
 	# X	split animation statically
 	# X	minimize sprite "sheet"
+	#	fine a more menacing tile for the traps
+	#	add a natural rock tile for cave walls
+	#	add accent colors to the sprites, which is easier than coming up with similar but unique doors and switches:
+		#	one for each channel of signals, red is for traps
+		#	gold for gold
 	
 #	release
-	#	design a fun-enough map!
+	# X	design a fun-enough map!
+	#	convert map to code
 	#	update readme
 	#	document map-making
