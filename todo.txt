@@ -14,7 +14,7 @@
 	# X	dynamically pad the document to provide desirable-length scrolling.
 	? 	Apparently `this.required("components")` is a thing. See for yourself and use it.
 
-@ 	player:
+@ X	player:
 	# X	set up player entity with default components
 	# X	add animated sprite, too
 	# X	write custom components for movement:
@@ -33,9 +33,9 @@
 		# X	place skull on map
 		# X	let player freely pan the map to see how much he has explored
 		# X	display pop-up on top saying "You have died! You collected X of Y gold. Try again?" which will reload map if clicked.
-	#	victory:
-		#	implement victory when all gold is collected
-		#	show message and be done with it
+	# X	victory:
+		# X	implement victory when all gold is collected
+		# X	show message and be done with it
 		
 @ X	map:
 	# X	design format to store map data
