@@ -1,16 +1,14 @@
 /*
-abcd    traps inactive
-ABCD    traps active
-hjkl    door open
-HJKL    door closed
-1234    switches
+*       traps
+123     switches
+hjk     door open
+HJK     door closed
         empty space
 X       wall
 x       wall secret
+#       rock
 .       floor
 $       gold
-@       player
-???     monsters
 */
 
 mapdata = {
@@ -20,10 +18,10 @@ mapdata = {
         "        X......................X",
         "        X..............$.......X",
         "        X......................X",
-        "        X.....$............$...X",
-        "        X......................X",
-        "        X......................X",
-        "        X..................H1A.X",
+        "        X.....$......#.....$...X",
+        "        X...........#.##.......X",
+        "        X...........#..........X",
+        "        X..................H1*.X",
         "        X......................X",
         "        XXXXXXXXXXXXXXXXXXXXxXXX",
         "                           X.X  ",

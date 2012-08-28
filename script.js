@@ -112,7 +112,7 @@ init = function() {
 	Crafty.scene("loading", function() {
 	    
 	    // Loading assets.
-	    Crafty.load(["sprites.png", "sprites_new.png"], function() {
+	    Crafty.load(["sprites.png"], function() {
 		Crafty.scene("main"); //when everything is loaded, run the main scene
 	    });
 	    
@@ -123,31 +123,25 @@ init = function() {
 		sprite_floor2: [0, 2],
 		sprite_floor3: [1, 1],
 		sprite_floor4: [1, 2],
-		sprite_trapoff: [0, 3],
-		sprite_trapon: [1, 3],
-		sprite_dooroff: [2, 2],
-		sprite_dooron: [3, 2],
-		sprite_switchoff: [2, 3],
-		sprite_switchon: [3, 3],
-		sprite_gold: [3, 0],
-		sprite_skull: [2, 0],
-		sprite_adventurer: [0, 0]
-	    });
-	    
-	    /*// Defining sprites.
-	    Crafty.sprite(24, "sprites_new.png", {
-		sprite_brick: [3, 1],
-		sprite_floor1: [0, 1],
-		sprite_floor2: [0, 2],
-		sprite_floor3: [1, 1],
-		sprite_floor4: [1, 2],
 		sprite_rock1: [2, 2],
 		sprite_rock2: [3, 2],
 		sprite_trap: [2, 1],
 		sprite_gold: [3, 0],
 		sprite_skull: [2, 0],
-		sprite_adventurer: [0, 0]
-	    });*/
+		sprite_adventurer: [0, 0],
+		sprite_switch1on: [2, 3],
+		sprite_switch1off: [3, 3],
+		sprite_switch2on: [2, 4],
+		sprite_switch2off: [3, 4],
+		sprite_switch3on: [2, 5],
+		sprite_switch3off: [3, 5],
+		sprite_door1on: [1, 3],
+		sprite_door1off: [0, 3],
+		sprite_door2on: [1, 4],
+		sprite_door2off: [0, 4],
+		sprite_door3on: [1, 5],
+		sprite_door3off: [0, 5]
+	    });
 	
 	});
 	
@@ -483,15 +477,13 @@ components: {
 	    // Hit handler.
 	    var hit = function (hitlist) {
 		for ( var i = 0; i < hitlist.length; i++ ) {
-		    if ( hitlist[i].obj.active ) {
-			if ( this.visible ) {
-			    this.visible = false;
-			    this.speed = 0;
-			    createDeath();
-			    Crafty.e("2D, Canvas, sprite_skull").attr({x: this.x, y: this.y, z: 10, w: unit, h: unit});
-			}
-			return;
+		    if ( this.visible ) {
+			this.visible = false;
+			this.speed = 0;
+			createDeath();
+			Crafty.e("2D, Canvas, sprite_skull").attr({x: this.x, y: this.y, z: 10, w: unit, h: unit});
 		    }
+		    return;
 		}
 	    };
 	
@@ -563,74 +555,24 @@ components: {
 	}
     });
     
+    // trap:
+    // The player is killed when it steps on these.
+    Crafty.c("trap", {
+	active: true,
+	init: function() {
+	    // Add Collision component.
+	    this.addComponent("sprite_trap");
+	}
+    });
+    
     // signal:
     // A simple value component that will denote the channel of signals to use for an Entityś other components.
     Crafty.c("signal", {signal: 0});
 
-    // trap:
-    // This component makes the entity a trap that listens to whatever signal channel has been set and toggles itself.
-    // Depends on: signal
-    Crafty.c("trap", {
-	active: true,
-	init: function() {
-	    
-	    // Add Collision component.
-	    this.addComponent("sprite_trapon");
-	    
-	    // Set scope for global event handler.
-	    var self = this;
-	    
-	    // Bind the handler to the event.
-	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {	
-		if ( self.has("sprite_trapon") ) {
-		    self.removeComponent("sprite_trapon", false);
-		    self.addComponent("sprite_trapoff");
-		    self.active = false;
-		} else {
-		    self.removeComponent("sprite_trapoff", false);
-		    self.addComponent("sprite_trapon");
-		    self.active = true;
-		}
-	    });
-	    
-	}	
-		
-    });
-    
-    // door:
-    // This component makes the entity a door that listens to whatever signal channel has been set and toggles itself.
-    // Depends on: signal
-    Crafty.c("door", {
-	
-	init: function() {
-	    
-	    // Add Collision component.
-	    this.addComponent("sprite_dooron, solid");
-	    
-	    // Set scope for global event handler.
-	    var self = this;
-	    
-	    // Bind the handler to the event.
-	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {		
-		if ( self.has("sprite_dooron") ) {
-		    self.removeComponent("sprite_dooron", false);
-		    self.removeComponent("solid", false);
-		    self.addComponent("sprite_dooroff");
-		} else {
-		    self.removeComponent("sprite_dooroff", false);
-		    self.addComponent("sprite_dooron");
-		    self.addComponent("solid");
-		}
-	    });
-	    
-	}	
-		
-    });
-    
     // switch:
     // A tile that will trigger a certain signal when stepped on by anything heavy.
     // Depends on: collision, signal
-    Crafty.c("switch", {
+    Crafty.c("switch1", {
 	_switch: {
 	    active: true,
 	    ready: true,
@@ -638,13 +580,13 @@ components: {
 		// If ready, toggle.
 		if ( this._switch.ready ) {
 		    if ( this._switch.active ) {
-			this.removeComponent("sprite_switchon", false);
-			this.addComponent("sprite_switchoff");
+			this.removeComponent("sprite_switch1on", false);
+			this.addComponent("sprite_switch1off");
 			this._switch.active = false;
 			Crafty.trigger("GlobalSwitchToggle"+this.signal);
 		    } else {
-			this.removeComponent("sprite_switchoff", false);
-			this.addComponent("sprite_switchon");
+			this.removeComponent("sprite_switch1off", false);
+			this.addComponent("sprite_switch1on");
 			this._switch.active = true;
 			Crafty.trigger("GlobalSwitchToggle"+this.signal);
 		    }
@@ -658,7 +600,7 @@ components: {
 	init: function() {
 	    
 	    // Add Collision component.
-	    this.addComponent("sprite_switchon, Collision");
+	    this.addComponent("sprite_switch1on, Collision, signal").attr({signal: 1});
 	    
 	    // Clone the internal namespace object.
 	    this._switch = Crafty.clone(this._switch);
@@ -670,7 +612,169 @@ components: {
 	    
 	}		
     });
-
+    Crafty.c("switch2", {
+	_switch: {
+	    active: true,
+	    ready: true,
+	    toggle: function() {
+		// If ready, toggle.
+		if ( this._switch.ready ) {
+		    if ( this._switch.active ) {
+			this.removeComponent("sprite_switch2on", false);
+			this.addComponent("sprite_switch2off");
+			this._switch.active = false;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
+		    } else {
+			this.removeComponent("sprite_switch2off", false);
+			this.addComponent("sprite_switch2on");
+			this._switch.active = true;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
+		    }
+		    this._switch.ready = false;
+		    // Wait 1sec to become ready again.
+		    this.timeout( 
+			function() { this._switch.ready = true }, 1000);	// Using this.timeout instead of setTimeOut directly preserves 'this' to the entity.
+		}
+	    }
+	},
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_switch2on, Collision, signal").attr({signal: 1});
+	    
+	    // Clone the internal namespace object.
+	    this._switch = Crafty.clone(this._switch);
+	    
+	    var that = this;
+	    
+	    // Bind the handlers to the events.
+	    this.onHit("heavy", this._switch.toggle);
+	    
+	}		
+    });
+    Crafty.c("switch3", {
+	_switch: {
+	    active: true,
+	    ready: true,
+	    toggle: function() {
+		// If ready, toggle.
+		if ( this._switch.ready ) {
+		    if ( this._switch.active ) {
+			this.removeComponent("sprite_switch3on", false);
+			this.addComponent("sprite_switch3off");
+			this._switch.active = false;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
+		    } else {
+			this.removeComponent("sprite_switch3off", false);
+			this.addComponent("sprite_switch3on");
+			this._switch.active = true;
+			Crafty.trigger("GlobalSwitchToggle"+this.signal);
+		    }
+		    this._switch.ready = false;
+		    // Wait 1sec to become ready again.
+		    this.timeout( 
+			function() { this._switch.ready = true }, 1000);	// Using this.timeout instead of setTimeOut directly preserves 'this' to the entity.
+		}
+	    }
+	},
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_switch3on, Collision, signal").attr({signal: 1});
+	    
+	    // Clone the internal namespace object.
+	    this._switch = Crafty.clone(this._switch);
+	    
+	    var that = this;
+	    
+	    // Bind the handlers to the events.
+	    this.onHit("heavy", this._switch.toggle);
+	    
+	}		
+    });
+    
+    // door:
+    // This component makes the entity a door that listens to whatever signal channel has been set and toggles itself.
+    // Depends on: signal
+    Crafty.c("door1", {
+	
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_door1on, solid, signal").attr({signal: 1});
+	    
+	    // Set scope for global event handler.
+	    var self = this;
+	    
+	    // Bind the handler to the event.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {		
+		if ( self.has("sprite_door1on") ) {
+		    self.removeComponent("sprite_door1on", false);
+		    self.removeComponent("solid", false);
+		    self.addComponent("sprite_door1off");
+		} else {
+		    self.removeComponent("sprite_door1off", false);
+		    self.addComponent("sprite_door1on");
+		    self.addComponent("solid");
+		}
+	    });
+	    
+	}	
+		
+    });
+    Crafty.c("door2", {
+	
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_door2on, solid, signal").attr({signal: 2});
+	    
+	    // Set scope for global event handler.
+	    var self = this;
+	    
+	    // Bind the handler to the event.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {		
+		if ( self.has("sprite_door2on") ) {
+		    self.removeComponent("sprite_door2on", false);
+		    self.removeComponent("solid", false);
+		    self.addComponent("sprite_door2off");
+		} else {
+		    self.removeComponent("sprite_door2off", false);
+		    self.addComponent("sprite_door2on");
+		    self.addComponent("solid");
+		}
+	    });
+	    
+	}	
+		
+    });
+    Crafty.c("door3", {
+	
+	init: function() {
+	    
+	    // Add Collision component.
+	    this.addComponent("sprite_door3on, solid, signal").attr({signal: 3});
+	    
+	    // Set scope for global event handler.
+	    var self = this;
+	    
+	    // Bind the handler to the event.
+	    Crafty.bind("GlobalSwitchToggle"+this.signal, function() {		
+		if ( self.has("sprite_door3on") ) {
+		    self.removeComponent("sprite_door3on", false);
+		    self.removeComponent("solid", false);
+		    self.addComponent("sprite_door3off");
+		} else {
+		    self.removeComponent("sprite_door3off", false);
+		    self.addComponent("sprite_door3on");
+		    self.addComponent("solid");
+		}
+	    });
+	    
+	}	
+		
+    });
+    
     // gold:
     // When walked over by player, increments score.
     // Depends on: Collision
@@ -729,11 +833,22 @@ assemblages: {
 	return tile;
     };
     
+    // Impassable rock tile.
+    createRock = function(x, y) {
+	// Randomize floor type.
+	var sprite_no = Math.floor(Math.random()*2)+1;
+	// Create entity with specific components.
+	var tile = Crafty.e("2D, Canvas, solid, fow, sprite_rock"+sprite_no)
+	    .attr({x: x, y: y, z: 0, w: unit, h: unit});
+	return tile;
+    };
+    
     // Gold!
     createGold = function(x, y) {
 	// Create entity with specific components.
 	var tile = Crafty.e("2D, Canvas, sprite_gold, fow, point")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
+	Crafty.total += 1;
 	return tile;
     };
     
@@ -748,35 +863,21 @@ assemblages: {
     };
     
     // A floor trap that springs when a live entity walks over it.
-    createTrap = function(x, y, signal, state) {
+    createTrap = function(x, y) {
 	// Set state for the togglable entity.
 	// Create entity with specific components.
-	var tile = Crafty.e("2D, Canvas, fow")
-	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
-	    .attr({signal: signal})
-	    .addComponent("trap");
-	// Set entity to off if asked.
-	if ( typeof(state) !== 'undefined' && !state ) {
-	    tile.removeComponent("sprite_trapon", false);
-	    tile.addComponent("sprite_trapoff");
-	    tile.active = false;
-	}
+	var tile = Crafty.e("2D, Canvas, fow, trap")
+	    .attr({x: x, y: y, z: 1, w: unit, h: unit});
 	return tile;
     };
     
     // A switch that toggles the specified entity.
-    createSwitch = function(x, y, signal, state) {
+    createSwitch = function(x, y, signal) {
 	// Create entity with specific components.
 	var tile = Crafty.e("2D, Canvas, fow, switch")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
 	    .attr({signal: signal})
-	    .addComponent("switch");
-	// Set entity to off if asked.
-	if ( typeof(state) !== 'undefined' && !state ) {
-	    tile.removeComponent("sprite_switchon", false);
-	    tile.addComponent("sprite_switchoff");
-	    tile._switch.active = false;
-	}
+	    .addComponent("switch"+signal);
 	return tile;
     };
     
@@ -786,12 +887,12 @@ assemblages: {
 	var tile = Crafty.e("2D, Canvas, fow")
 	    .attr({x: x, y: y, z: 1, w: unit, h: unit})
 	    .attr({signal: signal})
-	    .addComponent("door");
+	    .addComponent("door"+signal);
 	// Set entity to off if asked.
 	if ( typeof(state) !== 'undefined' && !state ) {
-	    tile.removeComponent("sprite_dooron", false);
+	    tile.removeComponent("sprite_door"+signal+"on", false);
 	    tile.removeComponent("solid", false);
-	    tile.addComponent("sprite_dooroff");
+	    tile.addComponent("sprite_door"+signal+"off");
 	}
 	return tile;
     };
@@ -818,8 +919,16 @@ assemblages: {
 			createWallSecret(x*unit, y*unit);		
 			break;
 			
+		    case "#": 	//rock
+			createRock(x*unit, y*unit);		
+			break;
+			
+		    case "*": 	//trap
+			createTrap(x*unit, y*unit, 1);
+			break;
+			
 		    case "1": 	//switch 1
-			createSwitch(x*unit, y*unit, 1);	
+			createSwitch(x*unit, y*unit, 1);		
 			break;
 		    case "2": 	//switch 2
 			createSwitch(x*unit, y*unit, 2);	
@@ -828,49 +937,28 @@ assemblages: {
 			createSwitch(x*unit, y*unit, 3);	
 			break;
 			
-		    case "A": 	//trap on
-			createTrap(x*unit, y*unit, 1);
-			break;
-		    case "B": 	//trap on
-			createTrap(x*unit, y*unit, 2);
-			break;
-		    case "C": 	//trap on
-			createTrap(x*unit, y*unit, 3);
-			break;
-			
-		    case "a": 	//trap off
-			createTrap(x*unit, y*unit, 1, false);
-			break;
-		    case "b": 	//trap off
-			createTrap(x*unit, y*unit, 2, false);
-			break;
-		    case "c": 	//trap off
-			createTrap(x*unit, y*unit, 3, false);
-			break;
-			
-		    case "H": 	//door closed
+		    case "H": 	//door 1 closed
 			createDoor(x*unit, y*unit, 1);
 			break;
-		    case "J": 	//door closed
+		    case "J": 	//door 2 closed
 			createDoor(x*unit, y*unit, 2);
 			break;
-		    case "K": 	//door closed
+		    case "K": 	//door 3 closed
 			createDoor(x*unit, y*unit, 3);
 			break;
 			
-		    case "h": 	//door open
+		    case "h": 	//door 1 open
 			createDoor(x*unit, y*unit, 1, false);
 			break;
-		    case "j": 	//door open
+		    case "j": 	//door 2 open
 			createDoor(x*unit, y*unit, 2, false);
 			break;
-		    case "k": 	//door open
+		    case "k": 	//door 3 open
 			createDoor(x*unit, y*unit, 3, false);
 			break;
 			
 		    case "$":	//gold
-			createGold(x*unit, y*unit, 3);
-			Crafty.total += 1;
+			createGold(x*unit, y*unit);
 			break;
 			
 		    default:	//nothing
