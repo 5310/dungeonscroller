@@ -57,11 +57,11 @@
 	@ X	offset for player and initial scroll
 	@ X	gold!
 	@ X	write assemblages for off door and traps
-	#	redo components and assemblages:
-		#	new rock tile and assemblage
-		#	trap has no off state
-		#	all switches and doors have hard-wired channels, and only three
-		#	gold, traps, doors, and switches do not create a floor underneath anymore
+	# X	redo components and assemblages:
+		# X	new rock tile and assemblage
+		# X	trap has no off state
+		# X	all switches and doors have hard-wired channels, and only three
+		# X	gold, traps, doors, and switches do not create a floor underneath anymore
 
 @ X artwork:
 	# X	copy over Oryx' spritesheets
