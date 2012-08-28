@@ -788,6 +788,8 @@ components: {
 	    var hit = function() {
 		Crafty.score += 1
 		createFloor(this.x, this.y);
+		if ( Crafty.score == Crafty.total )
+		    createVictory();
 		this.destroy();
 	    }
 	    
@@ -978,6 +980,14 @@ assemblages: {
 	document.getElementById("goldtotal").innerHTML= ""+Crafty.total;
 	// Display message.
 	document.getElementById("deathmessage").style.visibility = "visible";
+    }
+    
+    // Draws the victory-message on screen with score.
+    createVictory = function() {
+	// Set scores.
+	document.getElementById("gold").innerHTML= ""+Crafty.total;
+	// Display message.
+	document.getElementById("victorymessage").style.visibility = "visible";
     }
 
 }
