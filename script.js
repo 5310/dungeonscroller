@@ -8,15 +8,11 @@ window.onload = function () {
 init = function() {								
     
     // Sets up Crafty.
-    setup: { 
-	
-	// Load mapdata.							//TODO:
+    setup: {
 	
 	// Pre-reads map to get its dimensions.
 	map_width = mapdata.size.x;
 	map_height = mapdata.size.y;
-	scroll_width = mapdata.scroll.x;
-	scroll_height = mapdata.scroll.y;
 	origin_width = mapdata.origin.x;
 	origin_height = mapdata.origin.y;
 	
@@ -28,16 +24,9 @@ init = function() {
 	// Initialize Crafty.
 	Crafty.init(width, height);
 	Crafty.canvas.init();
-	
-	// Resize container by scrolling-leeway.
-	// Add margins to Crafty stage in order to center it.
-	var c = Crafty.stage.elem;
-	c.style.marginLeft = c.style.marginRight = ( ( window.innerWidth + (scroll_width-map_width)*unit  ) / 2 )+"px";
-	c.style.marginTop = c.style.marginBottom = ( ( window.innerHeight + (scroll_height-map_height)*unit ) / 2 ) +"px";
-	// Resize body horizontally, since it doesn't fit otherwise.
-	document.body.style.width = ( window.innerWidth + scroll_width*unit )+"px";
+
 	// Scroll document to center origin.
-	window.scrollBy(mapdata.origin.x*unit, mapdata.origin.y*unit);
+	window.scrollBy(mapdata.origin.x*unit-Math.floor(window.innerWidth/unit/2)*unit, mapdata.origin.y*unit-Math.floor(window.innerHeight/unit/2)*unit);
     }
 	
     // Extend Crafty for custom use.
@@ -147,7 +136,10 @@ init = function() {
 	
 	// Main scene.
 	Crafty.scene("main", function() {
-	    test();								//DEBUG:
+	    // A player entity.
+	    player = createPlayer(mapdata.origin.x*unit, mapdata.origin.y*unit);
+	    // Draw map.
+	    createMap(mapdata);
 	});
 
 	// Load the loading scene.
@@ -156,19 +148,6 @@ init = function() {
     }
 
 };
-
-
-
-// This function is used for debugging, and run just after the game is set-up.	
-test = function() {								//DEBUG:
-    
-    // A player entity.
-    player = createPlayer(mapdata.origin.x*unit, mapdata.origin.y*unit);
-    
-    // Draw map.
-    createMap(mapdata);
-	
-}
 
 
 
@@ -500,7 +479,7 @@ components: {
     // Depends on: 2D
     Crafty.c("fow", {
 	init: function() {		
-	    this.visible = false;						//DEBUG: Visibility toggling not yet implemented yet. So we'll keep it visible.
+	    this.visible = false;
 	}
     });
     
