@@ -45,6 +45,14 @@
 	padding-top: 10px;
 }
 
+#ribbon {
+	position: fixed; 
+	left: 0%;
+	right: 0%;
+	top: %;
+	z-index: 10;
+}
+
 #cr-stage { 
 	position: absolute;
 }
