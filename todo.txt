@@ -74,8 +74,8 @@
 		# X	one for each channel of signals, red is for traps
 		# X	gold for gold
 	
-#	release
+# 	release
 	# X	design a fun-enough map!
-	#	convert map to code
-	#	update readme
-	#	document map-making
+	# X	convert map to code
+	# X	update readme
+	#	a simple loading splash
